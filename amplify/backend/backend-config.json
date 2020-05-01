@@ -1,0 +1,9 @@
+{
+	"auth": {
+		"restaurantprojecte36cbc29": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": []
+		}
+	}
+}
