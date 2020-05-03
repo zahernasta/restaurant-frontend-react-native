@@ -1,33 +1,33 @@
 import  React, { Component, Fragment }  from 'react';
 
-import {Text, View, Animated, FlatList} from 'react-native';
+import {Text, View, Animated, FlatList, ScrollView, Button} from 'react-native';
 import { getOneRestaurant } from "../functions/RestaurantFunctions.";
 import AboutRestaurant  from "../components/restuarant-detail/AboutRestaurant";
 import Header from "../components/common/Header";
-import FloatingActionButton from "../components/common/FloatingActionButton";
+import {getAllRestaurantPhotos} from "../functions/PhotoFunction";
 
 import styled from "styled-components";
+import Gallery from "../components/common/Gallery";
 
+import {colors} from "../theme";
 
 const Container = styled(View)`
     flex: 1;
 `;
 
-const FloatingActionButtonWrapper = styled(View)`
-    width: 100%;
-    align-items: flex-end;
-    position: absolute;
-    margin-top: ${({ theme }) => theme.metrics.getHeightFromDP('25%') - 28}px;
-    padding-right: ${({ theme }) => theme.metrics.largeSize}px;
-`;
+// const FloatingActionButtonWrapper = styled(View)`
+//     width: 100%;
+//     align-items: flex-end;
+//     position: absolute;
+//     margin-top: ${({ theme }) => theme.metrics.getHeightFromDP('25%') - 28}px;
+//     padding-right: ${({ theme }) => theme.metrics.largeSize}px;
+// `;
 
 type Props = {
     userLocation: Object,
     navigation: Function,
     data: Object
 }
-
-const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 class RestaurantPage extends Component<Props, {}> {
 
@@ -41,6 +41,10 @@ class RestaurantPage extends Component<Props, {}> {
         email: "",
         name: "",
         deliveryCosts: "",
+        photoLocation: "",
+        photos: [],
+        content: false,
+        isEmpty: true
     };
 
     componentDidMount(): void {
@@ -50,6 +54,24 @@ class RestaurantPage extends Component<Props, {}> {
             id: itemId
         });
 
+        getAllRestaurantPhotos(itemId)
+            .then(photos => {
+                if(photos.length !== 0) {
+                    this.setState({
+                        photoLocation: photos[0].photoLocation,
+                        photos: photos,
+                        isEmpty: false
+                    })
+                } else {
+                    this.setState({
+                        photoLocation: 'photos/placeholder.png',
+                        isEmpty: true
+                    })
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            })
         getOneRestaurant(itemId)
             .then(restaurant => {
                 this.setState({
@@ -69,6 +91,10 @@ class RestaurantPage extends Component<Props, {}> {
                 console.log(error);
             })
     }
+
+    componentHideAndShow = () => {
+        this.setState(previousState => ({content: !previousState.content}));
+    };
 
     renderHeaderSection = (
         imageUrl: string,
@@ -91,16 +117,32 @@ class RestaurantPage extends Component<Props, {}> {
         />
     );
 
-    render() {
+    renderGallery = (
+        images: Array
+    ) => (
+        <Gallery images={this.state.photos}/>
+    )
 
+    render() {
         return(
-            <Container>
-                <Fragment>
+            <View style={{flex: 1}}>
+            <ScrollView >
+                <Fragment >
                     {
                         this.renderHeaderSection(
-                        "https://picsum.photos/700",
-                        "https://picsum.photos/700")
+                        `http://192.168.0.103:8080/${this.state.photoLocation}`,
+                        `http://192.168.0.103:8080/${this.state.photoLocation}`)
                     }
+                    {
+                        this.state.content ? this.renderGallery(this.state.photos) : null
+                    }
+                    {
+                        this.state.isEmpty ? null
+                            : <Button color={colors.primary}
+                                      title={!this.state.content ? "Click to show more images" : "Click to hide images" }
+                                      onPress={this.componentHideAndShow} />
+                    }
+
                     {
                         this.renderAboutRestaurant
                         (
@@ -111,8 +153,10 @@ class RestaurantPage extends Component<Props, {}> {
                             this.state.description
                         )
                     }
+
                 </Fragment>
-            </Container>
+            </ScrollView>
+            </View>
         )
     }
 }

@@ -58,7 +58,7 @@ class ProgressiveImage extends Component<Props, {}> {
                     style={[
                         styles.container,
                         {
-                            borderRadius: withBorder ? metrics.borderRadius : 0,
+                            // borderRadius: withBorder ? metrics.borderRadius : 0,
                             opacity: this.thumbnailOpacity,
                         },
                     ]}

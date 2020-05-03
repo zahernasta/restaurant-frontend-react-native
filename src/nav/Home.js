@@ -14,12 +14,14 @@ import { connect } from 'react-redux'
 import { Auth } from 'aws-amplify'
 
 import {getAllRestaurants} from "../functions/RestaurantFunctions.";
+import {getAllRestaurantPhotos} from "../functions/PhotoFunction";
 import { logOut } from '../actions'
 import { colors, fonts } from '../theme'
 const { width, height } = Dimensions.get('window')
 
 let user = Auth.currentAuthenticatedUser();
 // const { attributes } = user;
+let tempArray = [];
 
 class Home extends React.Component {
 
@@ -38,9 +40,19 @@ class Home extends React.Component {
 
         getAllRestaurants()
             .then(restaurants => {
-                this.setState({
-                    restaurantArray: restaurants
-                })
+                restaurants.map(restaurant => {
+                    getAllRestaurantPhotos(restaurant.id)
+                        .then(photo => {
+                            const object = Object.assign(restaurant, photo);
+                            tempArray.push(object);
+                            this.setState({
+                                restaurantArray: tempArray
+                            });
+                        })
+                        .catch(error => {
+                            console.log(error)
+                        })
+                });
             })
             .catch(error => {
                 console.log(error);
@@ -80,15 +92,14 @@ class Home extends React.Component {
     render() {
         let array = this.state.restaurantArray;
         let elements = [];
-
         for(let i = array.length - 1; i >= 0; i--) {
-            console.log(array[i].name);
             elements.push(
                 <RestaurantCard
-                    uri={"https://picsum.photos/700"}
+                    uri={array[i][0] === undefined ? `http://192.168.0.103:8080/photos/placeholder.png`
+                        : "http://192.168.0.103:8080/" + array[i][0].photoLocation}
                     title={array[i].name}
-                    paragraph={"Hi there"}
-                    location={"Strada Strazilor Numarul 69 NICE NICE"}
+                    paragraph={array[i].description.substring(0, 80) + ",,,"}
+                    location={array[i].address}
                     onPress={() => {
                         this.props.navigation.navigate("RestaurantPage", {
                             itemId: array[i].id
