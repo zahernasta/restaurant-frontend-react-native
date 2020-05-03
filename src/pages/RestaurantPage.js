@@ -1,20 +1,28 @@
 import  React, { Component, Fragment }  from 'react';
 
-import {Text, View, Animated, FlatList, ScrollView, Button} from 'react-native';
+import {Text, View, Animated, FlatList, ScrollView, Button, Dimensions} from 'react-native';
 import { getOneRestaurant } from "../functions/RestaurantFunctions.";
 import AboutRestaurant  from "../components/restuarant-detail/AboutRestaurant";
 import Header from "../components/common/Header";
 import {getAllRestaurantPhotos} from "../functions/PhotoFunction";
+import { getMenu } from "../functions/RestaurantFunctions.";
 
 import styled from "styled-components";
 import Gallery from "../components/common/Gallery";
+import Menu from "../components/common/Menu";
 
+import MenuItem from "../components/common/MenuItems";
+
+
+import metrics from "../metrics";
 import {colors} from "../theme";
 
 const Container = styled(View)`
     flex: 1;
 `;
 
+
+const { height } = Dimensions.get("window");
 // const FloatingActionButtonWrapper = styled(View)`
 //     width: 100%;
 //     align-items: flex-end;
@@ -44,8 +52,19 @@ class RestaurantPage extends Component<Props, {}> {
         photoLocation: "",
         photos: [],
         content: false,
-        isEmpty: true
+        isEmpty: true,
+        screenHeight: 0,
+        menu: [],
+        foodName: "",
+        foodPhoto: "",
     };
+
+    onContentSizeChange = (contentWidth, contentHeight) => {
+        this.setState({
+            screenHeight: contentHeight
+        })
+    }
+
 
     componentDidMount(): void {
         const {params} = this.props.navigation.state;
@@ -53,6 +72,18 @@ class RestaurantPage extends Component<Props, {}> {
         this.setState({
             id: itemId
         });
+
+        let foodArray = [];
+        getMenu(itemId)
+            .then(async(menu) => {
+                // console.log(menu);
+                await this.setState({
+                    menu: menu
+                })
+            })
+            .catch(error => {
+                console.log(error);
+            });
 
         getAllRestaurantPhotos(itemId)
             .then(photos => {
@@ -85,11 +116,12 @@ class RestaurantPage extends Component<Props, {}> {
                     deliveryCosts: restaurant.deliveryCosts,
                     description: restaurant.description
                 });
-                console.log(restaurant);
             })
             .catch(error => {
                 console.log(error);
-            })
+            });
+
+
     }
 
     componentHideAndShow = () => {
@@ -120,13 +152,26 @@ class RestaurantPage extends Component<Props, {}> {
     renderGallery = (
         images: Array
     ) => (
-        <Gallery images={this.state.photos}/>
+        <Gallery images={images}/>
+    );
+
+    renderMenu = (
+        menu: Array,
+        photo: string,
+    ) => (
+        <Menu menu={menu} photo={photo}/>
     )
 
+
     render() {
+        const scrollEnabled = this.state.screenHeight > height;
         return(
+            <Container>
             <View style={{flex: 1}}>
-            <ScrollView >
+            <ScrollView
+                scrollEnabled={scrollEnabled}
+                onContentSizeChange={this.onContentSizeChange}
+            >
                 <Fragment >
                     {
                         this.renderHeaderSection(
@@ -153,10 +198,14 @@ class RestaurantPage extends Component<Props, {}> {
                             this.state.description
                         )
                     }
+                    {
+                        this.renderMenu(this.state.menu, this.state.photoLocation)
+                    }
 
                 </Fragment>
             </ScrollView>
             </View>
+            </Container>
         )
     }
 }

@@ -18,4 +18,15 @@ export const getOneRestaurant = (id) => {
         .catch(error => {
             return error;
         })
+};
+
+export const getMenu = (id) => {
+    return axios.get(`http://192.168.0.103:8080/api/restaurants/${id}/menu`)
+        .then(foods => {
+            return foods.data;
+        })
+        .catch(error => {
+            return error;
+        })
 }
+

@@ -4,7 +4,8 @@ const colors = {
     black: "#000",
     progressiveImageForeground: 'rgba(242, 242, 242, 0.5)',
     white: "#fff",
-    lightingDarkLayer: 'rgba(0, 0, 0, 0.2)'
+    lightingDarkLayer: 'rgba(0, 0, 0, 0.2)',
+    gray: "rgb(128,128,128)"
 }
 const fonts = {
     hairline: 'Lato-Hairline',
