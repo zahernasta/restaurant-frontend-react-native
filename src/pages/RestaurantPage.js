@@ -15,7 +15,19 @@ import MenuItem from "../components/common/MenuItems";
 
 
 import metrics from "../metrics";
-import {colors} from "../theme";
+import {colors, fonts} from "../theme";
+
+const DishTitle = styled(Text).attrs({
+    ellipsizeMode: 'tail',
+    numberOfLines: 1
+})`
+    margin-left: 10px;
+    margin-bottom: ${() => metrics.extraSmallSize}px;
+    margin-top: ${() => metrics.getWidthFromDP("0.5%")}px;
+    color: ${() => colors.primary};
+    font-size : ${() => metrics.getWidthFromDP("9%")}px;
+    font-family: ${() => fonts.bold}
+`;
 
 const Container = styled(View)`
     flex: 1;
@@ -57,6 +69,7 @@ class RestaurantPage extends Component<Props, {}> {
         menu: [],
         foodName: "",
         foodPhoto: "",
+        foodCategories: []
     };
 
     onContentSizeChange = (contentWidth, contentHeight) => {
@@ -74,17 +87,31 @@ class RestaurantPage extends Component<Props, {}> {
         });
 
         let foodArray = [];
+        let categoryArray = [];
+        let uniqueArray = [];
         getMenu(itemId)
-            .then(async(menu) => {
+            .then((menu) => {
                 // console.log(menu);
-                await this.setState({
+                this.setState({
                     menu: menu
                 })
+
+                this.state.menu.map(food => {
+                    console.log(food);
+                    categoryArray.push(food.foodCategory.name);
+                })
+
+                uniqueArray = [...new Set(categoryArray)];
+                this.setState({
+                    foodCategories: uniqueArray
+                });
             })
             .catch(error => {
                 console.log(error);
             });
 
+
+        console.log(uniqueArray);
         getAllRestaurantPhotos(itemId)
             .then(photos => {
                 if(photos.length !== 0) {
@@ -175,8 +202,8 @@ class RestaurantPage extends Component<Props, {}> {
                 <Fragment >
                     {
                         this.renderHeaderSection(
-                        `http://192.168.0.103:8080/${this.state.photoLocation}`,
-                        `http://192.168.0.103:8080/${this.state.photoLocation}`)
+                        `http://192.168.1.100:8080//${this.state.photoLocation}`,
+                        `http://192.168.1.100:8080//${this.state.photoLocation}`)
                     }
                     {
                         this.state.content ? this.renderGallery(this.state.photos) : null
@@ -199,7 +226,39 @@ class RestaurantPage extends Component<Props, {}> {
                         )
                     }
                     {
-                        this.renderMenu(this.state.menu, this.state.photoLocation)
+                        // this.renderMenu(this.state.menu, this.state.photoLocation)
+                        <View>
+                            {
+                                this.state.foodCategories.map(category => {
+
+                                    return(
+                                        <View>
+                                            <DishTitle>
+                                                {category}
+                                            </DishTitle>
+                                            <ScrollView
+                                                horizontal={true}
+                                                style={{marginBottom: 10}}
+                                            >
+                                            {this.state.menu.map(food => {
+                                                console.log(food.foodCategory.name);
+                                                if(food.foodCategory.name === category){
+                                                    console.log(food);
+                                                    return (
+
+                                                        <MenuItem
+                                                            image={"photos/valorant-ranks.jpg"}
+                                                            title={food.foodName}
+                                                        />
+                                                    )
+                                                }
+                                            })}
+                                            </ScrollView>
+                                        </View>
+                                    )
+                                })
+                            }
+                        </View>
                     }
 
                 </Fragment>

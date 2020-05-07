@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export default register = (user) => {
-    return axios.post("http://192.168.0.103:8080/api/users", {
+    return axios.post("http://192.168.1.100:8080//api/users", {
         username: user.username,
         email: user.email
     }).then(res => {

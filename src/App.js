@@ -36,7 +36,7 @@ class App extends Component {
     }
   }
 
-  async componentWillReceiveProps(nextProps) {
+  async UNSAFE_componentWillReceiveProps(nextProps) {
     try {
       const user = await Auth.currentAuthenticatedUser();
       this.setState({ user });

@@ -27,7 +27,7 @@ export default class GalleryImage extends Component {
                     animation={'bounceIn'}
                     delay={100 * index}
                     duration={500}
-                    source={{ uri: "http://192.168.0.103:8080/" + this.props.uri }}
+                    source={{ uri: "http://192.168.1.100:8080//" + this.props.uri }}
                     style={{
                         height: 77,
                         left: 2,

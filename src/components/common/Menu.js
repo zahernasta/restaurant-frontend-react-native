@@ -42,34 +42,6 @@ export default class Menu extends Component<Props, {}> {
 
     render() {
         const { menu, photo } = this.props;
-        return (
-            <View>
-            {
-                this.state.foodCategories.map(category => {
-                    return(
-                        <View>
-                            <DishTitle>
-                                {category}
-                            </DishTitle>
-                            {menu.map(food => {
-                                console.log(food);
-                                if(food.foodCategory.name === category)
-                                    return (
-                                        <ScrollView
-                                            horizontal={true}
-                                        >
-                                            <MenuItem
-                                                image={photo}
-                                                title={food.foodName}
-                                            />
-                                        </ScrollView>
-                                    )
-                            })}
-                        </View>
-                    )
-                })
-            }
-            </View>
-        );
+
     }
 }

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const getAllRestaurants = () => {
-    return axios.get("http://192.168.0.103:8080/api/restaurants")
+    return axios.get("http://192.168.1.100:8080//api/restaurants")
     .then(restaurants => {
         return restaurants.data;
     })
@@ -11,7 +11,7 @@ export const getAllRestaurants = () => {
 };
 
 export const getOneRestaurant = (id) => {
-    return axios.get(`http://192.168.0.103:8080/api/restaurants/${id}`)
+    return axios.get(`http://192.168.1.100:8080//api/restaurants/${id}`)
         .then(restaurant => {
             return restaurant.data;
         })
@@ -21,7 +21,7 @@ export const getOneRestaurant = (id) => {
 };
 
 export const getMenu = (id) => {
-    return axios.get(`http://192.168.0.103:8080/api/restaurants/${id}/menu`)
+    return axios.get(`http://192.168.1.100:8080//api/restaurants/${id}/menu`)
         .then(foods => {
             return foods.data;
         })

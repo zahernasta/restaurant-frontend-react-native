@@ -27,7 +27,7 @@ const DarkLayer = styled(View)`
 `;
 
 const DishImage = styled(FastImage).attrs(({image}) => ({
-    source: {uri: "http://192.168.0.103:8080/" + image}
+    source: {uri: "http://192.168.1.100:8080//" + image}
 }))`
     width: 100%;
     height: 100%;
@@ -61,7 +61,7 @@ const MenuItem = ({
         <View>
             <FastImage
                 style={{height: 200, width: 200, borderRadius: 10}}
-                source={{uri: "http://192.168.0.103:8080/" + image}}
+                source={{uri: "http://192.168.1.100:8080//" + image}}
             />
 
             <DarkLayer>

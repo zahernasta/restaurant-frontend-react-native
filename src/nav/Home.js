@@ -95,8 +95,8 @@ class Home extends React.Component {
         for(let i = array.length - 1; i >= 0; i--) {
             elements.push(
                 <RestaurantCard
-                    uri={array[i][0] === undefined ? `http://192.168.0.103:8080/photos/placeholder.png`
-                        : "http://192.168.0.103:8080/" + array[i][0].photoLocation}
+                    uri={array[i][0] === undefined ? `http://192.168.1.100:8080//photos/placeholder.png`
+                        : "http://192.168.1.100:8080//" + array[i][0].photoLocation}
                     title={array[i].name}
                     paragraph={array[i].description.substring(0, 80) + ",,,"}
                     location={array[i].address}

@@ -61,7 +61,7 @@ class SignUp extends Component<{}> {
         this.props.dispatchConfirmUser(username, authCode)
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         const { auth: { showSignUpConfirmationModal }} = nextProps
         if (!showSignUpConfirmationModal && this.props.auth.showSignUpConfirmationModal) {
             this.setState(initialState)
