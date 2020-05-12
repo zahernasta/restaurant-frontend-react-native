@@ -13,6 +13,8 @@ import Menu from "../components/common/Menu";
 
 import MenuItem from "../components/common/MenuItems";
 
+import { NetworkInfo } from "react-native-network-info";
+
 
 import metrics from "../metrics";
 import {colors, fonts} from "../theme";
@@ -80,6 +82,10 @@ class RestaurantPage extends Component<Props, {}> {
 
 
     componentDidMount(): void {
+        console.log();
+        NetworkInfo.getIPAddress().then(ipAdress => {
+            console.log(ipAdress);
+        })
         const {params} = this.props.navigation.state;
         const itemId = params ? params.itemId : null;
         this.setState({
@@ -202,8 +208,8 @@ class RestaurantPage extends Component<Props, {}> {
                 <Fragment >
                     {
                         this.renderHeaderSection(
-                        `http://192.168.1.100:8080//${this.state.photoLocation}`,
-                        `http://192.168.1.100:8080//${this.state.photoLocation}`)
+                        `http://192.168.1.101:8080//${this.state.photoLocation}`,
+                        `http://192.168.1.101:8080//${this.state.photoLocation}`)
                     }
                     {
                         this.state.content ? this.renderGallery(this.state.photos) : null
@@ -247,8 +253,10 @@ class RestaurantPage extends Component<Props, {}> {
                                                     return (
 
                                                         <MenuItem
+                                                            price={food.foodPrice}
                                                             image={"photos/valorant-ranks.jpg"}
                                                             title={food.foodName}
+                                                            quantity={food.foodQuantity}
                                                         />
                                                     )
                                                 }

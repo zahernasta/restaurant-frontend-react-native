@@ -4,6 +4,7 @@ import { Text, View, Image } from "react-native";
 import { withNavigation } from "react-navigation";
 import FastImage from "react-native-fast-image";
 import styled from "styled-components";
+import PriceFlag from "./FlagPrice";
 
 import metrics from "../../metrics";
 import { colors, fonts } from "../../theme";
@@ -27,7 +28,7 @@ const DarkLayer = styled(View)`
 `;
 
 const DishImage = styled(FastImage).attrs(({image}) => ({
-    source: {uri: "http://192.168.1.100:8080//" + image}
+    source: {uri: "http://192.168.1.101:8080//" + image}
 }))`
     width: 100%;
     height: 100%;
@@ -44,6 +45,17 @@ const DishTitle = styled(Text).attrs({
     font-family: ${() => fonts.bold}
 `;
 
+const QuantityTitle = styled(Text).attrs({
+    ellipsizeMode: 'tail',
+    numberOfLines: 1
+})`
+    margin-bottom: ${() => metrics.extraSmallSize}px;
+    margin-top: ${() => metrics.getWidthFromDP("0.5%")}px;
+    color: ${() => colors.gray};
+    font-size : ${() => metrics.getWidthFromDP("4%")}px;
+    font-family: ${() => fonts.bold}
+`;
+
 type Props = {
     navigation: Object,
     image: string,
@@ -53,22 +65,29 @@ type Props = {
 
 const MenuItem = ({
     // onPress,
+    price,
     image,
     title,
+    quantity
     // TODO: add price after testing
 } :Props ):Object => (
     <Container>
         <View>
             <FastImage
                 style={{height: 200, width: 200, borderRadius: 10}}
-                source={{uri: "http://192.168.1.100:8080//" + image}}
+                source={{uri: "http://192.168.1.101:8080//" + image}}
             />
 
             <DarkLayer>
-                {/*Flag price to be inserted here*/}
+                <FlagPriceWrapper>
+                    <PriceFlag
+                        price={price}
+                    />
+                </FlagPriceWrapper>
             </DarkLayer>
 
             <DishTitle>{title}</DishTitle>
+            <QuantityTitle>{quantity}g</QuantityTitle>
             {/*TODO: Add reviews after making them in database*/}
         </View>
     </Container>

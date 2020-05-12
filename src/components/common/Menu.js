@@ -23,25 +23,4 @@ const DishTitle = styled(Text).attrs({
 
 export default class Menu extends Component<Props, {}> {
 
-    state = {
-        foodCategories: []
-    };
-
-    componentDidMount(): void {
-        let categoryArray = [];
-        this.props.menu.map(item =>{
-            categoryArray.push(item.foodCategory.name);
-        })
-
-        let uniqueArray = [...new Set(categoryArray)];
-        this.setState({
-            foodCategories: uniqueArray
-        })
-    }
-
-
-    render() {
-        const { menu, photo } = this.props;
-
-    }
 }
