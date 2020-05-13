@@ -9,6 +9,8 @@ import {
     Dimensions, Button
 } from 'react-native'
 
+import { ipAddress } from "../config";
+
 import RestaurantCard from "../components/restuarant-detail/RestaurantCard";
 import { connect } from 'react-redux'
 import { Auth } from 'aws-amplify'
@@ -67,9 +69,6 @@ class Home extends React.Component {
                 console.log('err: ', err)
             })
     }
-    navigate() {
-        this.props.navigation.navigate('Route1')
-    }
     animate() {
         Animated.timing(
             this.AnimatedScale,
@@ -95,8 +94,8 @@ class Home extends React.Component {
         for(let i = array.length - 1; i >= 0; i--) {
             elements.push(
                 <RestaurantCard
-                    uri={array[i][0] === undefined ? `http://192.168.1.101:8080//photos/placeholder.png`
-                        : "http://192.168.1.101:8080//" + array[i][0].photoLocation}
+                    uri={array[i][0] === undefined ? ipAddress + `photos/placeholder.png`
+                        : ipAddress + array[i][0].photoLocation}
                     title={array[i].name}
                     paragraph={array[i].description.substring(0, 80) + ",,,"}
                     location={array[i].address}

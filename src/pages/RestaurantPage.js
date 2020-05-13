@@ -18,6 +18,7 @@ import { NetworkInfo } from "react-native-network-info";
 
 import metrics from "../metrics";
 import {colors, fonts} from "../theme";
+import {ipAddress} from "../config";
 
 const DishTitle = styled(Text).attrs({
     ellipsizeMode: 'tail',
@@ -81,11 +82,8 @@ class RestaurantPage extends Component<Props, {}> {
     }
 
 
-    componentDidMount(): void {
-        console.log();
-        NetworkInfo.getIPAddress().then(ipAdress => {
-            console.log(ipAdress);
-        })
+    async componentDidMount(): void {
+
         const {params} = this.props.navigation.state;
         const itemId = params ? params.itemId : null;
         this.setState({
@@ -208,8 +206,8 @@ class RestaurantPage extends Component<Props, {}> {
                 <Fragment >
                     {
                         this.renderHeaderSection(
-                        `http://192.168.1.101:8080//${this.state.photoLocation}`,
-                        `http://192.168.1.101:8080//${this.state.photoLocation}`)
+                        ipAddress + `${this.state.photoLocation}`,
+                            ipAddress + `${this.state.photoLocation}`)
                     }
                     {
                         this.state.content ? this.renderGallery(this.state.photos) : null
@@ -257,6 +255,11 @@ class RestaurantPage extends Component<Props, {}> {
                                                             image={"photos/valorant-ranks.jpg"}
                                                             title={food.foodName}
                                                             quantity={food.foodQuantity}
+                                                            onPress={() => {
+                                                                this.props.navigation.navigate("FoodDetail", {
+                                                                    itemId: food.id
+                                                                })
+                                                            }}
                                                         />
                                                     )
                                                 }

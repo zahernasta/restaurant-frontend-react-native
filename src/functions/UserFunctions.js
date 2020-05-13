@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { ipAddress } from "../config";
 
 export default register = (user) => {
-    return axios.post("http://192.168.1.101:8080//api/users", {
+    return axios.post(ipAddress + "api/users", {
         username: user.username,
         email: user.email
     }).then(res => {

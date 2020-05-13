@@ -7,6 +7,7 @@ import StackNav from "../pages/Navigations";
 import {createAppContainer, createSwitchNavigator} from "react-navigation";
 import Home from "./Home";
 import RestaurantPage from "../pages/RestaurantPage";
+import FoodDetail from "../pages/FoodDetail";
 
 const switchNavigation = createStackNavigator(
     {
@@ -27,6 +28,16 @@ const switchNavigation = createStackNavigator(
                 title: "",
                 style: {backgroundColor: "white"}}
         },
+
+        FoodDetail : {
+            screen: FoodDetail,
+            navigationOptions: {
+                headerShown: true,
+                headerTransparent: true,
+                title: "",
+                style: {backgroundColor: "white"}
+            }
+        }
 
     }
 );

@@ -3,6 +3,8 @@ import { Dimensions, View } from 'react-native';
 import { Button } from 'native-base';
 import { Image } from 'react-native-animatable';
 const WIDTH = Dimensions.get('window').width;
+import {ipAddress} from "../../config";
+
 export default class GalleryImage extends Component {
     render() {
         const { uri, index } = this.props;
@@ -27,7 +29,7 @@ export default class GalleryImage extends Component {
                     animation={'bounceIn'}
                     delay={100 * index}
                     duration={500}
-                    source={{ uri: "http://192.168.1.101:8080//" + this.props.uri }}
+                    source={{ uri: ipAddress + this.props.uri }}
                     style={{
                         height: 77,
                         left: 2,

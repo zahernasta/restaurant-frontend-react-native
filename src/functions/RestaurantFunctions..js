@@ -1,8 +1,10 @@
 import axios from 'axios';
+import {ipAddress} from "../config";
 
 export const getAllRestaurants = () => {
-    return axios.get("http://192.168.1.101:8080//api/restaurants")
+    return axios.get( ipAddress + "api/restaurants")
     .then(restaurants => {
+        console.log(ipAddress);
         return restaurants.data;
     })
         .catch(error => {
@@ -11,7 +13,7 @@ export const getAllRestaurants = () => {
 };
 
 export const getOneRestaurant = (id) => {
-    return axios.get(`http://192.168.1.101:8080//api/restaurants/${id}`)
+    return axios.get(ipAddress + `api/restaurants/${id}`)
         .then(restaurant => {
             return restaurant.data;
         })
@@ -21,7 +23,7 @@ export const getOneRestaurant = (id) => {
 };
 
 export const getMenu = (id) => {
-    return axios.get(`http://192.168.1.101:8080//api/restaurants/${id}/menu`)
+    return axios.get(ipAddress + `api/restaurants/${id}/menu`)
         .then(foods => {
             return foods.data;
         })

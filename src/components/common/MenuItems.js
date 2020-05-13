@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image } from "react-native";
+import { Text, View, Image, TouchableOpacity } from "react-native";
 
 import { withNavigation } from "react-navigation";
 import FastImage from "react-native-fast-image";
@@ -8,6 +8,7 @@ import PriceFlag from "./FlagPrice";
 
 import metrics from "../../metrics";
 import { colors, fonts } from "../../theme";
+import {ipAddress} from "../../config";
 
 const Container = styled(View) `
     width: ${() => metrics.getWidthFromDP('45%')}px;
@@ -28,7 +29,7 @@ const DarkLayer = styled(View)`
 `;
 
 const DishImage = styled(FastImage).attrs(({image}) => ({
-    source: {uri: "http://192.168.1.101:8080//" + image}
+    source: {uri: ipAddress + image}
 }))`
     width: 100%;
     height: 100%;
@@ -64,32 +65,33 @@ type Props = {
 }
 
 const MenuItem = ({
-    // onPress,
+    onPress,
     price,
     image,
     title,
     quantity
-    // TODO: add price after testing
 } :Props ):Object => (
     <Container>
-        <View>
-            <FastImage
-                style={{height: 200, width: 200, borderRadius: 10}}
-                source={{uri: "http://192.168.1.101:8080//" + image}}
-            />
+        <TouchableOpacity onPress={onPress}>
+            <View>
+                <FastImage
+                    style={{height: 200, width: 200, borderRadius: 10}}
+                    source={{uri: ipAddress + image}}
+                />
 
-            <DarkLayer>
-                <FlagPriceWrapper>
-                    <PriceFlag
-                        price={price}
-                    />
-                </FlagPriceWrapper>
-            </DarkLayer>
+                <DarkLayer>
+                    <FlagPriceWrapper>
+                        <PriceFlag
+                            price={price}
+                        />
+                    </FlagPriceWrapper>
+                </DarkLayer>
 
-            <DishTitle>{title}</DishTitle>
-            <QuantityTitle>{quantity}g</QuantityTitle>
-            {/*TODO: Add reviews after making them in database*/}
-        </View>
+                <DishTitle>{title}</DishTitle>
+                <QuantityTitle>{quantity}g</QuantityTitle>
+                {/*TODO: Add reviews after making them in database*/}
+            </View>
+        </TouchableOpacity>
     </Container>
 );
 

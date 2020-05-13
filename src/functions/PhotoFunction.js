@@ -1,7 +1,8 @@
 import axios from 'axios';
+import {ipAddress} from "../config";
 
 export const getAllRestaurantPhotos = async (id) => {
-    return axios.get(`http://192.168.1.101:8080//api/restaurants/${id}/photo/`)
+    return axios.get(ipAddress + `api/restaurants/${id}/photo/`)
         .then(photos => {
             return photos.data;
         })
