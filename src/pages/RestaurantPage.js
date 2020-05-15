@@ -4,7 +4,7 @@ import {Text, View, Animated, FlatList, ScrollView, Button, Dimensions} from 're
 import { getOneRestaurant } from "../functions/RestaurantFunctions.";
 import AboutRestaurant  from "../components/restuarant-detail/AboutRestaurant";
 import Header from "../components/common/Header";
-import {getAllRestaurantPhotos} from "../functions/PhotoFunction";
+import {getAllRestaurantPhotos} from "../functions/PhotoFunctions";
 import { getMenu } from "../functions/RestaurantFunctions.";
 
 import styled from "styled-components";
@@ -12,6 +12,7 @@ import Gallery from "../components/common/Gallery";
 import Menu from "../components/common/Menu";
 
 import MenuItem from "../components/common/MenuItems";
+import { Auth } from 'aws-amplify'
 
 import { NetworkInfo } from "react-native-network-info";
 
@@ -52,6 +53,8 @@ type Props = {
     data: Object
 }
 
+let user = Auth.currentAuthenticatedUser();
+
 class RestaurantPage extends Component<Props, {}> {
 
     state = {
@@ -72,7 +75,8 @@ class RestaurantPage extends Component<Props, {}> {
         menu: [],
         foodName: "",
         foodPhoto: "",
-        foodCategories: []
+        foodCategories: [],
+        username: ""
     };
 
     onContentSizeChange = (contentWidth, contentHeight) => {
@@ -84,10 +88,12 @@ class RestaurantPage extends Component<Props, {}> {
 
     async componentDidMount(): void {
 
+        console.log("User : " + user._55.username);
         const {params} = this.props.navigation.state;
         const itemId = params ? params.itemId : null;
         this.setState({
-            id: itemId
+            id: itemId,
+            username: user._55.username
         });
 
         let foodArray = [];
@@ -257,7 +263,9 @@ class RestaurantPage extends Component<Props, {}> {
                                                             quantity={food.foodQuantity}
                                                             onPress={() => {
                                                                 this.props.navigation.navigate("FoodDetail", {
-                                                                    itemId: food.id
+                                                                    itemId: food.id,
+                                                                    restaurantId: this.state.id,
+                                                                    username: this.state.username
                                                                 })
                                                             }}
                                                         />

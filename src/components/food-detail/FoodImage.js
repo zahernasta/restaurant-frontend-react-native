@@ -9,6 +9,8 @@ import ProgressiveImage from "../common/ProgressiveImage";
 import { colors } from "../../theme";
 import metrics from "../../metrics";
 
+import {addItemsToBasket} from "../../functions/BasketFunctions";
+
 // import SeeRestaurantButton from './SeeRestaurantButton';
 
 const ImageWrapper = styled(View)`
@@ -47,6 +49,7 @@ const BlackLayer = styled(View)`
 type Props = {
     thumbnailImageURL: string,
     imageURL: string,
+    onPress: Function
 };
 
 type State = {
@@ -70,6 +73,7 @@ class FoodImage extends Component<Props, State> {
         const {
             thumbnailImageURL,
             imageURL,
+            onPress
         } = this.props;
 
         return (
@@ -86,7 +90,7 @@ class FoodImage extends Component<Props, State> {
                     <SmokeShadow />
                 </ImageWrapper>
                 <AddOrderButtonWrappers>
-                    <AddOrderButton/>
+                    <AddOrderButton onPress={onPress}/>
                 </AddOrderButtonWrappers>
             </Fragment>
         );

@@ -16,7 +16,7 @@ import { connect } from 'react-redux'
 import { Auth } from 'aws-amplify'
 
 import {getAllRestaurants} from "../functions/RestaurantFunctions.";
-import {getAllRestaurantPhotos} from "../functions/PhotoFunction";
+import {getAllRestaurantPhotos} from "../functions/PhotoFunctions";
 import { logOut } from '../actions'
 import { colors, fonts } from '../theme'
 const { width, height } = Dimensions.get('window')

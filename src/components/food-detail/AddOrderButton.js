@@ -35,18 +35,14 @@ const SeeText = styled(Text)`
   font-family: CircularStd-Black;
 `;
 
-// type Props = {
-//     restaurantId: string,
-//     navigation: Object,
-// };
+type Props = {
+    onPress: Function,
+};
 
-const AddOrderButton = (): Object => (
+const AddOrderButton = ({onPress}): Object => (
     <Container>
         <Wrapper
-            // onPress={() => navigation.navigate(CONSTANTS.ROUTE_RESTAURANT_DETAIL, {
-            //     [CONSTANTS.NAVIGATION_PARAM_ID]: restaurantId,
-            // })
-            // }
+            onPress={onPress}
         >
             <SeeText>Add Order</SeeText>
         </Wrapper>

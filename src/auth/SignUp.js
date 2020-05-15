@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import register from '../functions/UserFunctions';
+import { register } from '../functions/UserFunctions';
 
 import {
     Platform,

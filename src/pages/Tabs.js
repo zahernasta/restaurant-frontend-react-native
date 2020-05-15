@@ -7,6 +7,7 @@ import RestaurantPage from "./RestaurantPage";
 import { colors, fonts } from '../theme'
 import UserSettings from "./UserSettings";
 import Home from "../nav/Home";
+import Basket from "./Basket";
 
 
 const styles = StyleSheet.create({
@@ -30,6 +31,18 @@ const TabNavigatorAfterLogin = createBottomTabNavigator({
             )
         }
     },
+    Basket: {
+        screen: Basket,
+        navigationOptions: {
+            title: 'Basket',
+            tabBarIcon: ({ tintColor }) => (
+                <Image
+                    source={require('../assets/boomboxcropped.png')}
+                    style={[styles.icon, { tintColor }]}
+                />
+            )
+        }
+    },
     UserSettings: {
         screen: UserSettings,
         navigationOptions: {
@@ -41,7 +54,8 @@ const TabNavigatorAfterLogin = createBottomTabNavigator({
                 />
             )
         }
-    }
+    },
+
 });
 
 export default TabNavigatorAfterLogin;

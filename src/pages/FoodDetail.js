@@ -7,10 +7,12 @@ import styled from 'styled-components';
 // import { Alert, TYPES } from '~/components/common/alert';
 // import Loading from '~/components/common/Loading';
 
-import {getOneFood} from "../functions/FoodFunction";
+import {getOneFood} from "../functions/FoodFunctions";
+import {findUserByUsername} from "../functions/UserFunctions";
 
 import FoodImage from '../components/food-detail/FoodImage';
 import FoodCard from '../components/food-detail/common';
+import {addItemsToBasket} from "../functions/BasketFunctions";
 
 import {colors} from "../theme";
 import {ipAddress} from "../config";
@@ -34,15 +36,21 @@ class FoodDetail extends Component<Props, {}> {
     state = {
         id: null,
         food: null,
+        username: "",
+        restaurantId: null,
+        user: null
     };
 
     componentDidMount(): void {
         const {params} = this.props.navigation.state;
         const itemId = params ? params.itemId : null;
+        const username = params ? params.username : null;
+        const restaurantId = params ? params.restaurantId : null;
         this.setState({
-            id: itemId
+            id: itemId,
+            username: username,
+            restaurantId: restaurantId
         });
-        console.log(itemId);
         getOneFood(itemId)
             .then(food => {
                 this.setState({
@@ -52,16 +60,45 @@ class FoodDetail extends Component<Props, {}> {
             .catch(error => {
                 console.log(error);
         })
+
+        findUserByUsername(this.state.username)
+            .then(user => {
+                this.setState({
+                    user: user
+                })
+            })
+            .catch(error => {
+                console.log(error);
+            })
+
+
+    }
+
+    addOrder() {
+        console.log(this.state.food.id  ,this.state.user[0].id, this.state.restaurantId);
+        const basketItem = {
+            food: {
+                id: this.state.food.id,
+                foodName: this.state.food.foodName,
+                foodIngredients: this.state.food.foodIngredients,
+                foodQuantity: this.state.food.foodQuantity,
+                foodPrice: this.state.food.foodPrice
+            },
+            quantity: 1
+        }
+        addItemsToBasket(this.state.restaurantId, this.state.user[0].id, basketItem)
     }
 
     render() {
         return (
                 <Fragment>
                     <Container>
-                        <FoodImage
+                        {this.state.user == null ? null : <FoodImage
                             thumbnailImageURL={ipAddress + "photos/valorant-ranks.jpg"}
                             imageURL={ipAddress + "photos/valorant-ranks.jpg"}
-                        />
+                            onPress={() => this.addOrder()}
+                        />}
+
                         {this.state.food == null ? null : <FoodCard dishDetail={this.state.food}/>}
 
                     </Container>
