@@ -8,6 +8,8 @@ import { colors, fonts } from '../theme'
 import UserSettings from "./UserSettings";
 import Home from "../nav/Home";
 import Basket from "./Basket";
+import OrderPage from "./OrderPage";
+import FavoritePage from "./FavoritePage";
 
 
 const styles = StyleSheet.create({
@@ -26,6 +28,30 @@ const TabNavigatorAfterLogin = createBottomTabNavigator({
             tabBarIcon: ({ tintColor }) => (
                 <Image
                     source={require('../assets/signInButton.png')}
+                    style={[styles.icon, { tintColor }]}
+                />
+            )
+        }
+    },
+    Orders: {
+        screen: OrderPage,
+        navigationOptions: {
+            title: "Orders",
+            tabBarIcon: ({ tintColor }) => (
+                <Image
+                    source={require('../assets/boomboxcropped.png')}
+                    style={[styles.icon, { tintColor }]}
+                />
+            )
+        }
+    },
+    Favorite: {
+        screen: FavoritePage,
+        navigationOptions : {
+            title: "Favorites",
+            tabBarIcon: ({ tintColor }) => (
+                <Image
+                    source={require('../assets/shape.png')}
                     style={[styles.icon, { tintColor }]}
                 />
             )

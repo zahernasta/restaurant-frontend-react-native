@@ -1,9 +1,13 @@
 import axios from 'axios';
 import {ipAddress} from "../config";
 
-export const addOrder = (basketId, userId, restaurantId, order) => {
-    return axios.post(ipAddress + `api/orders/${basketId}/users/${userId}/restaurants/${restaurantId}`, {
-
+export const createOneOrder = (userId, restaurantId, order) => {
+    return axios.post(ipAddress + `api/orders/users/${userId}/restaurants/${restaurantId}`, {
+        orderDate: order.orderDate,
+        orderTime: order.orderTime,
+        orderStatus: order.orderStatus,
+        orderCancelled: order.orderCancelled,
+        amount: order.amount
     })
         .then(data => {
             console.log(data)

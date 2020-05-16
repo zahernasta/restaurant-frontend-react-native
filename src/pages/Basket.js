@@ -9,12 +9,14 @@ import {
 import {getItemsFromBasket} from "../functions/BasketFunctions";
 import {findUserByUsername} from "../functions/UserFunctions";
 import {getOneRestaurant} from "../functions/RestaurantFunctions.";
+import {createOneOrder} from "../functions/OrderFunctions";
 
 import BasketCard from '../components/basket-detail/BasketCard'
 
 import { Auth } from 'aws-amplify'
 import {ipAddress} from "../config";
 import {colors} from "../theme";
+import type {Float} from "react-native/Libraries/Types/CodegenTypes";
 
 let user = Auth.currentAuthenticatedUser();
 
@@ -58,6 +60,25 @@ class Basket extends Component {
             });
     }
 
+    createOrder(sum: Float) {
+        const order = {
+            orderDate: new Date().getFullYear() + "-" + new Date().getMonth() + 1 + "-" +
+                new Date().getDate(),
+            orderTime: new Date().getHours() + ":" + new Date().getMinutes() + ":" +
+                new Date().getSeconds(),
+            orderStatus: false,
+            orderCancelled: false,
+            amount: sum,
+        }
+
+        createOneOrder(this.state.userId, this.state.restaurantId, order)
+            .then(response => {
+
+            })
+            .catch(error => {
+
+            });
+    }
 
     render() {
         let basketItems = this.state.basketItems;
@@ -83,13 +104,14 @@ class Basket extends Component {
                     onContentSizeChange={this.onContentSizeChange}
                 >
                     {element}
-                    <Text style={styles.viewName}>SubTotal : {sum} Lei</Text>
+                    <Text style={styles.viewName}>{sum === 0 ? "Nothing ordered yet" :
+                    `SubTotal : ${sum} Lei`}</Text>
 
                 </ScrollView>
-                <Button color={colors.primary}
-                        title={"Order Now"}
-                        onPress={() => console.log("hello")}
-                />
+                {sum === 0 ? null :<Button color={colors.primary}
+                                           title={"Order Now"}
+                                           onPress={() => this.createOrder(sum)}
+                /> }
 
             </View>
         )
@@ -104,7 +126,7 @@ const styles = StyleSheet.create({
         height: "100%",
         fontWeight: "700",
         bottom: 0,
-        borderRadius: 6
+        borderRadius: 6, textAlign: "center"
     }
 })
 
