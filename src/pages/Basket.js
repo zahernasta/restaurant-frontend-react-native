@@ -1,22 +1,20 @@
 import React, {Component} from 'react';
 
 import {
-    Platform,
+    ScrollView,
     Text,
-    View,
-    TextInput,
-    StyleSheet,
-    TouchableOpacity,
-    Image,
-    ActivityIndicator,
-    Modal
+    StyleSheet, Button, View
 } from 'react-native';
 
 import {getItemsFromBasket} from "../functions/BasketFunctions";
 import {findUserByUsername} from "../functions/UserFunctions";
 import {getOneRestaurant} from "../functions/RestaurantFunctions.";
 
+import BasketCard from '../components/basket-detail/BasketCard'
+
 import { Auth } from 'aws-amplify'
+import {ipAddress} from "../config";
+import {colors} from "../theme";
 
 let user = Auth.currentAuthenticatedUser();
 
@@ -24,20 +22,25 @@ class Basket extends Component {
     state = {
         username: null,
         userId: null,
-        restaurantId: 1,
+        restaurantId: null,
         basketItems: [],
         grandTotal: null,
     };
 
     componentDidMount(): void {
+        const {params} = this.props.navigation.state;
+        const restaurantId = params ? params.restaurantId : null;
+
         this.setState({
             username: user._55.username,
         });
 
         findUserByUsername(user._55.username)
             .then(user => {
+                console.log(user.id);
                 this.setState({
-                    userId: user.id
+                    userId: user.id,
+                    restaurantId: restaurantId
                 });
                 getItemsFromBasket(this.state.restaurantId, this.state.userId)
                     .then(items => {
@@ -53,26 +56,56 @@ class Basket extends Component {
             .catch(error => {
                 console.log(error)
             });
-
-
-
     }
+
 
     render() {
         let basketItems = this.state.basketItems;
         let element = [];
+        let sum = 0.0;
         basketItems.map(items => {
+            sum += items.food.foodPrice * items.quantity;
             element.push(
-                <Text>{items.food.foodName}</Text>
+                <BasketCard
+                    uri={ipAddress + "photos/valorant-ranks.jpg"}
+                    foodName={items.food.foodName}
+                    foodCategory={items.food.foodCategory.name}
+                    foodQuantity={items.quantity}
+                    foodPrice={items.food.foodPrice * items.quantity}
+                />
             )
         });
 
         return(
-            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                {element}
+            <View style={{flex: 1}}>
+                <ScrollView
+                    scrollEnabled={true}
+                    onContentSizeChange={this.onContentSizeChange}
+                >
+                    {element}
+                    <Text style={styles.viewName}>SubTotal : {sum} Lei</Text>
+
+                </ScrollView>
+                <Button color={colors.primary}
+                        title={"Order Now"}
+                        onPress={() => console.log("hello")}
+                />
+
             </View>
         )
     }
 };
+
+const styles = StyleSheet.create({
+    viewName: {
+        fontSize: 24,
+        padding: 16,
+        width: "100%",
+        height: "100%",
+        fontWeight: "700",
+        bottom: 0,
+        borderRadius: 6
+    }
+})
 
 export default Basket;

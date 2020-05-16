@@ -61,8 +61,9 @@ class FoodDetail extends Component<Props, {}> {
                 console.log(error);
         })
 
-        findUserByUsername(this.state.username)
+        findUserByUsername(username)
             .then(user => {
+                console.log(user);
                 this.setState({
                     user: user
                 })
@@ -75,7 +76,7 @@ class FoodDetail extends Component<Props, {}> {
     }
 
     addOrder() {
-        console.log(this.state.food.id  ,this.state.user[0].id, this.state.restaurantId);
+        console.log(this.state.food.id  ,this.state.user.id, this.state.restaurantId);
         const basketItem = {
             food: {
                 id: this.state.food.id,
@@ -86,19 +87,18 @@ class FoodDetail extends Component<Props, {}> {
             },
             quantity: 1
         }
-        addItemsToBasket(this.state.restaurantId, this.state.user[0].id, basketItem)
+        addItemsToBasket(this.state.restaurantId, this.state.user.id, basketItem)
     }
 
     render() {
         return (
                 <Fragment>
                     <Container>
-                        {this.state.user == null ? null : <FoodImage
+                        <FoodImage
                             thumbnailImageURL={ipAddress + "photos/valorant-ranks.jpg"}
                             imageURL={ipAddress + "photos/valorant-ranks.jpg"}
                             onPress={() => this.addOrder()}
-                        />}
-
+                        />
                         {this.state.food == null ? null : <FoodCard dishDetail={this.state.food}/>}
 
                     </Container>

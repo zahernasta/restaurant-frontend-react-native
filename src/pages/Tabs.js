@@ -31,18 +31,6 @@ const TabNavigatorAfterLogin = createBottomTabNavigator({
             )
         }
     },
-    Basket: {
-        screen: Basket,
-        navigationOptions: {
-            title: 'Basket',
-            tabBarIcon: ({ tintColor }) => (
-                <Image
-                    source={require('../assets/boomboxcropped.png')}
-                    style={[styles.icon, { tintColor }]}
-                />
-            )
-        }
-    },
     UserSettings: {
         screen: UserSettings,
         navigationOptions: {

@@ -8,6 +8,8 @@ import {createAppContainer, createSwitchNavigator} from "react-navigation";
 import Home from "./Home";
 import RestaurantPage from "../pages/RestaurantPage";
 import FoodDetail from "../pages/FoodDetail";
+import Basket from "../pages/Basket";
+import {Image} from "react-native";
 
 const switchNavigation = createStackNavigator(
     {
@@ -27,6 +29,16 @@ const switchNavigation = createStackNavigator(
                 headerTransparent: true,
                 title: "",
                 style: {backgroundColor: "white"}}
+        },
+
+        Basket: {
+            screen: Basket,
+            navigationOptions: {
+                headerShown: true,
+                headerTransparent: true,
+                title: "",
+                style: {backgroundColor: "white"}
+            }
         },
 
         FoodDetail : {

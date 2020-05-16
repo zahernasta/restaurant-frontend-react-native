@@ -235,6 +235,18 @@ class RestaurantPage extends Component<Props, {}> {
                             this.state.description
                         )
                     }
+
+                        <Button color={colors.primary}
+                                title={"Go To Basket"}
+                                onPress={() => {
+                                    this.props.navigation.navigate("Basket", {
+                                            restaurantId: this.state.id,
+                                        }
+                                    )
+                                }
+                            }
+                        />
+
                     {
                         // this.renderMenu(this.state.menu, this.state.photoLocation)
                         <View>
