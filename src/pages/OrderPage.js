@@ -7,21 +7,60 @@ import {
 
 
 import { Auth } from 'aws-amplify'
+import OrderCard from "../components/order-detail/OrderCard";
+import {findUserByUsername} from "../functions/UserFunctions";
+import {getOrdersByUserId} from "../functions/OrderFunctions";
+
+let user = Auth.currentAuthenticatedUser();
 
 class OrderPage extends Component {
     state = {
-        username: null,
-        avatar: null
+        userId: null,
+        avatar: null,
+        orderArray: [],
     };
 
     componentDidMount(): void {
-        this.setState();
+        findUserByUsername(user._55.username)
+            .then(user => {
+                this.setState({
+                    userId: user.id
+                });
+                getOrdersByUserId(this.state.userId)
+                    .then(orders => {
+                        this.setState({
+                            orderArray: orders
+                        })
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }
 
     render() {
+        let array = this.state.orderArray;
+        let elements = [];
+        array.map(element => {
+            console.log(element);
+            elements.push(
+                <OrderCard
+                    number = {element.id}
+                    orderDate={element.orderDate}
+                    orderTime={element.orderTime}
+                    orderStatus={element.orderStatus}
+                    deliveryDate={element.deliveryDate}
+                    deliveryTime={element.deliveryTime}
+                    price={element.amount}
+                />
+            )
+        })
         return(
-            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                <Text>Order Page, WELKOMEN BITCH</Text>
+            <View style={{flex: 1}}>
+                {elements}
             </View>
         )
     }

@@ -16,3 +16,14 @@ export const createOneOrder = (userId, restaurantId, order) => {
             console.log(error);
         })
 }
+
+export const getOrdersByUserId = (userId) => {
+    return axios.get(ipAddress + `api/orders/user/${userId}`)
+        .then(items => {
+            console.log(items.data);
+            return items.data;
+        })
+        .catch(error => {
+            console.log(error);
+        })
+}
