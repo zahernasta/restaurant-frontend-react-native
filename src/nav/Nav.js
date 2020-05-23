@@ -2,14 +2,15 @@ import React from 'react'
 import { createStackNavigator } from 'react-navigation-stack'
 import { NavigationContainer } from "@react-navigation/native";
 
-import TabNavigatorAfterLogin from "../pages/Tabs";
-import StackNav from "../pages/Navigations";
+import TabNavigatorAfterLogin from "./Tabs";
+import StackNav from "./Navigations";
 import {createAppContainer, createSwitchNavigator} from "react-navigation";
-import Home from "./Home";
+import Home from "../pages/Home";
 import RestaurantPage from "../pages/RestaurantPage";
 import FoodDetail from "../pages/FoodDetail";
 import Basket from "../pages/Basket";
 import {Image} from "react-native";
+import OrderItemPage from "../pages/OrderItemPage";
 
 const switchNavigation = createStackNavigator(
     {
@@ -33,6 +34,16 @@ const switchNavigation = createStackNavigator(
 
         Basket: {
             screen: Basket,
+            navigationOptions: {
+                headerShown: true,
+                headerTransparent: true,
+                title: "",
+                style: {backgroundColor: "white"}
+            }
+        },
+
+        OrderItems: {
+            screen: OrderItemPage,
             navigationOptions: {
                 headerShown: true,
                 headerTransparent: true,

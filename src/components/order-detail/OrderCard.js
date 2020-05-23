@@ -14,20 +14,20 @@ import PriceFlag from "../common/FlagPrice";
 import {colors} from "../../theme";
 import OrderDetailFlag from "../common/OrderDetailFlag";
 
-export default ({number, orderDate, orderTime, orderStatus = false, deliveryDate, deliveryTime, price}) =>  (
+export default ({number, orderDate, orderTime, orderStatus = false, deliveryDate, deliveryTime, price, onPress}) =>  (
     <View style={styles.viewCard}>
         <View style={{marginTop: 10}}>
             <View style={styles.orderLine}>
                 <Text style={styles.orderNumberText}>Order number : {number}</Text>
                 <OrderDetailFlag style={styles.orderFlag}
-                                 onPress={() => ToastAndroid.show("Pressed", ToastAndroid.LONG)} />
+                                 onPress={onPress} />
             </View>
             <View style={styles.otherDetail}>
                 <Text style={styles.orderDateTime}>Order Date: {orderDate}</Text>
                 <Text style={styles.orderDateTime}>Order Time: {orderTime}</Text>
                 {orderStatus === false ?
                     <View>
-                        <Text style={styles.orderStatus}>Status: Not Delivered</Text>
+                        <Text style={styles.orderStatusRefused}>Status: Not Delivered</Text>
                         <Text style={styles.orderDeliveryDateTime}>
                             Delivery Date: TBD
                         </Text>
@@ -37,7 +37,7 @@ export default ({number, orderDate, orderTime, orderStatus = false, deliveryDate
                     </View>
                     :
                     <View>
-                        <Text style={styles.orderStatus}>Status: Delivered</Text>
+                        <Text style={styles.orderStatusAccepted}>Status: Delivered</Text>
                         <Text style={styles.orderDeliveryDateTime}>
                             Delivery Date: {deliveryDate}
                         </Text>
@@ -103,9 +103,16 @@ const styles = {
         marginLeft: 15,
     },
 
-    orderStatus: {
-      fontSize: 16,
-      fontWeight: "bold"
+    orderStatusAccepted: {
+        fontSize: 16,
+        fontWeight: "bold",
+        color: "green"
+    },
+
+    orderStatusRefused: {
+        fontSize: 16,
+        fontWeight: "bold",
+        color: "red"
     },
 
     otherDetail: {

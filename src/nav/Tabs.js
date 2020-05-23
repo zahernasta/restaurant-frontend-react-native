@@ -2,14 +2,14 @@ import React from 'react'
 import { Image, StyleSheet } from 'react-native'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
 import {createStackNavigator} from "react-navigation-stack";
-import RestaurantPage from "./RestaurantPage";
+import RestaurantPage from "../pages/RestaurantPage";
 
 import { colors, fonts } from '../theme'
-import UserSettings from "./UserSettings";
-import Home from "../nav/Home";
-import Basket from "./Basket";
-import OrderPage from "./OrderPage";
-import FavoritePage from "./FavoritePage";
+import UserSettings from "../pages/UserSettings";
+import Home from "../pages/Home";
+import Basket from "../pages/Basket";
+import OrderPage from "../pages/OrderPage";
+import FavoritePage from "../pages/FavoritePage";
 
 
 const styles = StyleSheet.create({

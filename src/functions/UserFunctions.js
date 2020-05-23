@@ -26,3 +26,23 @@ export const findUserByUsername = (username) => {
             console.log(error);
         })
 }
+
+export const getUserFavorites = (userId) => {
+    return axios.get(ipAddress + `api/users/${userId}/favorites`)
+        .then(favorite => {
+            return favorite.data;
+        })
+        .catch(error => {
+            console.log(error);
+        })
+}
+
+export const addFavorites = (userId, restaurantId) => {
+    return axios.post(ipAddress + `api/users/${userId}/restaurants/${restaurantId}`)
+        .then(data => {
+            return data.data;
+        })
+        .catch(error => {
+            console.log(error);
+        })
+}

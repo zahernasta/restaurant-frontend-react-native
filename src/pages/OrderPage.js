@@ -45,7 +45,7 @@ class OrderPage extends Component {
         let array = this.state.orderArray;
         let elements = [];
         array.map(element => {
-            console.log(element);
+            console.log(element.orderItemSet);
             elements.push(
                 <OrderCard
                     number = {element.id}
@@ -55,6 +55,9 @@ class OrderPage extends Component {
                     deliveryDate={element.deliveryDate}
                     deliveryTime={element.deliveryTime}
                     price={element.amount}
+                    onPress={() => this.props.navigation.navigate("OrderItems", {
+                        items: element.orderItemSet
+                    })}
                 />
             )
         })

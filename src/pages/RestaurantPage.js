@@ -1,6 +1,6 @@
 import  React, { Component, Fragment }  from 'react';
 
-import {Text, View, Animated, FlatList, ScrollView, Button, Dimensions} from 'react-native';
+import {Text, View, Animated, FlatList, ScrollView, Button, Dimensions, ToastAndroid} from 'react-native';
 import { getOneRestaurant } from "../functions/RestaurantFunctions.";
 import AboutRestaurant  from "../components/restuarant-detail/AboutRestaurant";
 import Header from "../components/common/Header";
@@ -20,6 +20,7 @@ import { NetworkInfo } from "react-native-network-info";
 import metrics from "../metrics";
 import {colors, fonts} from "../theme";
 import {ipAddress} from "../config";
+import {addFavorites, findUserByUsername} from "../functions/UserFunctions";
 
 const DishTitle = styled(Text).attrs({
     ellipsizeMode: 'tail',
@@ -199,6 +200,22 @@ class RestaurantPage extends Component<Props, {}> {
         <Menu menu={menu} photo={photo}/>
     )
 
+    addFavorite = () => {
+        findUserByUsername(user._55.username)
+            .then(user => {
+                addFavorites(user.id, this.state.id)
+                    .then(message => {
+                        ToastAndroid.show(message, ToastAndroid.SHORT);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    };
+
 
     render() {
         const scrollEnabled = this.state.screenHeight > height;
@@ -236,6 +253,7 @@ class RestaurantPage extends Component<Props, {}> {
                         )
                     }
 
+
                         <Button color={colors.primary}
                                 title={"Go To Basket"}
                                 onPress={() => {
@@ -246,6 +264,19 @@ class RestaurantPage extends Component<Props, {}> {
                                 }
                             }
                         />
+
+                    <View style={{marginBottom: 10, marginTop: 10, flex: 1,
+                        justifyContent: "center", alignItems: "center"}}>
+                        <Button
+                            style={{borderRadius: 6}}
+                            color={colors.primary}
+                            title={"Add Favorite"}
+                            onPress={() => {
+                                    this.addFavorite()
+                                }
+                            }
+                        />
+                    </View>
 
                     {
                         // this.renderMenu(this.state.menu, this.state.photoLocation)
