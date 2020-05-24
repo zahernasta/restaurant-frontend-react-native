@@ -12,8 +12,12 @@ import {
     Modal
 } from 'react-native';
 
-
+import {colors} from "../theme";
+import UserCard from "../components/common/UserCard";
 import { Auth } from 'aws-amplify'
+import {logOut} from "../actions";
+import connect from "react-redux/lib/connect/connect";
+import {ipAddress} from "../config";
 
 class UserSettings extends Component {
     state = {
@@ -36,7 +40,12 @@ class UserSettings extends Component {
 
     render() {
         return(
-            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <View style={{flex: 1, backgroundColor: colors.white}}>
+                <UserCard
+                    name={"Zaher"}
+                    uri={ipAddress + "photos/valorant-ranks.jpg"}
+                    email={"zaher.nasta19@gmail.com"}
+                />
                 <Text onPress={this.logout.bind(this)} >Logout</Text>
                 <Text>UserSettings Page, WELKOMEN BITCH</Text>
             </View>
@@ -44,4 +53,12 @@ class UserSettings extends Component {
     }
 };
 
-export default UserSettings;
+const mapDispatchToProps = {
+    dispatchLogout: () => logOut()
+}
+
+const mapStateToProps = state => ({
+    auth: state.auth
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserSettings);

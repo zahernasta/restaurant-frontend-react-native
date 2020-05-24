@@ -87,7 +87,7 @@ const TabNavigatorAfterLogin = createBottomTabNavigator({
         style: {
             backgroundColor: colors.white,
             borderTopWidth: 0.5,
-            borderTopColor: 'grey',
+            borderTopColor: '#dddd',
             elevation: 1,
         }
     }

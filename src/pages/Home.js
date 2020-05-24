@@ -39,15 +39,20 @@ class Home extends React.Component {
         username: null,
     }
 
+    constructor() {
+        super();
+
+    }
+
     AnimatedScale = new Animated.Value(1);
     componentDidMount() {
 
         this.animate();
 
+
         this.setState({
             username: user._55.username
         })
-
         getAllRestaurants()
             .then(restaurants => {
                 restaurants.map(restaurant => {

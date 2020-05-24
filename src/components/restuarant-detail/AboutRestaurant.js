@@ -3,18 +3,21 @@ import React, { Fragment } from 'react';
 import {Image, Text, View, StyleSheet} from 'react-native';
 import { fonts, colors } from '../../theme';
 
+import IconEntypo from "react-native-vector-icons/Entypo";
+
 
 const renderHoursAndAddress = (operatingHours, address) => (
     <Fragment>
         <View style={styles.sectionRow}>
-            <Image style={styles.customIcon} source={require("../../assets/shape.png")} />
+
+            <IconEntypo name={"location"} style={styles.customIcon} />
             <Text  style={styles.defaultText}>
                 {address}
             </Text>
         </View>
 
         <View style={styles.sectionRow}>
-            <Image style={styles.customIcon} source={require("../../assets/boomboxcropped.png")} />
+            <IconEntypo name={"clock"} style={styles.customIcon}/>
             <Text  style={styles.defaultText}>
                 {operatingHours}
             </Text>
@@ -28,9 +31,26 @@ export default ({address, operatingHours, name, description}) => (
             {name}
         </Text>
         {renderHoursAndAddress(operatingHours, address)}
+        <View
+            style={{
+                marginTop: 15,
+                marginHorizontal: 15,
+                borderBottomColor: colors.secondary,
+                borderBottomWidth: 0.5,
+            }}
+        />
         <Text  style={styles.descriptionText}>
             {description}
         </Text>
+
+        <View
+            style={{
+                marginTop: 10,
+                marginHorizontal: 15,
+                borderBottomColor: colors.secondary,
+                borderBottomWidth: 0.5,
+            }}
+        />
     </View>
 )
 
@@ -45,14 +65,15 @@ const styles = StyleSheet.create({
     descriptionText: {
         marginTop: 20,
         marginBottom: 20,
+        marginHorizontal: 10,
         color: colors.secondary,
         fontSize: 20,
         fontFamily: fonts.base
     },
 
     defaultText: {
-        color: colors.primary,
-        fontSize: 15,
+        color: colors.secondary,
+        fontSize: 13,
         fontFamily: fonts.base
     },
 
@@ -61,21 +82,20 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         marginTop: 10,
-        marginLeft: 5
+        marginHorizontal: 10,
     },
 
     restaurantName: {
         width:"100%",
         color: colors.black,
+        marginTop: 30,
+        marginHorizontal: 10,
         fontSize: 40,
         fontFamily: fonts.bold
     },
 
     customIcon: {
-        width: 18,
-        height: 18,
-        marginLeft: -5,
-        marginRight: 5,
+        marginRight: 10,
         color: colors.primary
     }
 });

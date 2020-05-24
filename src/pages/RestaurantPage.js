@@ -51,13 +51,6 @@ const Container = styled(View)`
 
 
 const { height } = Dimensions.get("window");
-// const FloatingActionButtonWrapper = styled(View)`
-//     width: 100%;
-//     align-items: flex-end;
-//     position: absolute;
-//     margin-top: ${({ theme }) => theme.metrics.getHeightFromDP('25%') - 28}px;
-//     padding-right: ${({ theme }) => theme.metrics.largeSize}px;
-// `;
 
 type Props = {
     userLocation: Object,
@@ -168,6 +161,10 @@ class RestaurantPage extends Component<Props, {}> {
             .catch(error => {
                 console.log(error);
             });
+
+        this.props.navigation.setParams({
+            handleFavorites: () => this.addFavorite()
+        });
     }
 
     renderHeaderSection = (
@@ -209,16 +206,27 @@ class RestaurantPage extends Component<Props, {}> {
     static navigationOptions = ({navigation}) => {
         const {params = {}} = navigation.state;
         return {
-            headerRight: (
-                <TouchableOpacity onPress={() => navigation.navigate("Basket", {
-                    restaurantId: params.handleBasket
-                })}
-                  style={{marginRight: 10}}>
-                    <IconBasket
-                        name={"shopping-basket"}
-                        size={26}
-                    />
-                </TouchableOpacity>
+            headerRight: () => (
+                <View style={{flexDirection: "row"}}>
+                    <TouchableOpacity onPress={() => navigation.navigate("Basket", {
+                        restaurantId: params.handleBasket
+                    })}
+                                      style={{marginRight: 10, backgroundColor: colors.white, borderRadius: 100}}>
+                        <IconBasket
+                            name={"shopping-basket"}
+                            size={23}
+                        />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => params.handleFavorites() }  style={{marginRight: 10,
+                        backgroundColor: colors.white, borderRadius: 100}}>
+                        <IconBasket
+                            name={"heart-alt"}
+                            size={23}
+                        />
+                    </TouchableOpacity>
+                </View>
+
             )
         }
     }
@@ -227,7 +235,7 @@ class RestaurantPage extends Component<Props, {}> {
         const scrollEnabled = this.state.screenHeight > height;
         return(
             <Container>
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, backgroundColor: colors.white}}>
             <ScrollView
                 scrollEnabled={scrollEnabled}
                 onContentSizeChange={this.onContentSizeChange}
@@ -248,26 +256,29 @@ class RestaurantPage extends Component<Props, {}> {
                         )
                     }
 
-                    <View style={{marginBottom: 10, marginTop: 10, flex: 1,
-                        justifyContent: "center", alignItems: "center"}}>
-                        <Button
-                            style={{borderRadius: 6}}
-                            color={colors.primary}
-                            title={"Add Favorite"}
-                            onPress={() => {
-                                    this.addFavorite()
-                                }
-                            }
-                        />
-                    </View>
-
                     {
-                        <View>
+                        <View style={{flex: 1, marginHorizontal: 13}}>
+                            <View style={{marginBottom: 10, marginTop: 10, flex: 1,
+                                justifyContent: "flex-start", alignItems: "center",
+                                marginHorizontal: 20}}>
+                                <Text style={{fontSize: 40, fontWeight: "700"}}>
+                                    MENU
+                                </Text>
+                            </View>
+
+                            <View
+                                style={{
+                                    marginTop: 10,
+                                    marginHorizontal: 15,
+                                    borderBottomColor: colors.secondary,
+                                    borderBottomWidth: 0.5,
+                                }}
+                            />
                             {
                                 this.state.foodCategories.map(category => {
 
                                     return(
-                                        <View>
+                                        <View style={{marginTop: 10}}>
                                             <DishTitle>
                                                 {category}
                                             </DishTitle>
@@ -302,7 +313,16 @@ class RestaurantPage extends Component<Props, {}> {
                                         </View>
                                     )
                                 })
+
                             }
+                            <View
+                                style={{
+                                    marginTop: 10,
+                                    marginHorizontal: 15,
+                                    borderBottomColor: colors.secondary,
+                                    borderBottomWidth: 0.5,
+                                }}
+                            />
                         </View>
                     }
 

@@ -24,6 +24,7 @@ class OrderPage extends Component {
     componentDidMount(): void {
         findUserByUsername(user._55.username)
             .then(user => {
+                console.log(user);
                 this.setState({
                     userId: user.id
                 });

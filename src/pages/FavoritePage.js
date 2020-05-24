@@ -12,6 +12,8 @@ import {findUserByUsername, getUserFavorites} from "../functions/UserFunctions";
 import RestaurantCard from "../components/restuarant-detail/RestaurantCard";
 import {ipAddress} from "../config";
 
+import NewRestaurantCard from "../components/common/NewRestaurantCard";
+
 const user = Auth.currentAuthenticatedUser();
 
 class FavoritePage extends Component {
@@ -48,11 +50,12 @@ class FavoritePage extends Component {
         array.map(restaurant => {
             console.log(restaurant.photoList[0]);
             elements.push(
-                <RestaurantCard
+                <NewRestaurantCard
                     uri={restaurant.photoList[0] === undefined ? ipAddress + `photos/placeholder.png`
                         : ipAddress + restaurant.photoList[0].photoLocation}
-                    title={restaurant.name}
-                    paragraph={restaurant.description.substring(0, 80) + "..."}
+                    category={"Italian"}
+                    name={restaurant.name}
+                    description={restaurant.description.substring(0, 80) + "..."}
                     location={restaurant.address}
                     onPress={() => {
                         this.props.navigation.navigate("RestaurantPage", {

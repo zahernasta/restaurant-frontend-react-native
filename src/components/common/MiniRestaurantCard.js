@@ -17,8 +17,8 @@ export default({uri, category, name, description, location, onPress}) => (
             <View style={styles.viewRestaurantCardText}>
                 <Text style={styles.textCategory}>{category}</Text>
                 <Text style={styles.textName}>{name}</Text>
-                <Text style={styles.textDescription}>{description}</Text>
-                {/*<Text style={styles.textLocation}>{location}</Text>*/}
+                {/*<Text style={styles.textDescription}>{description}</Text>*/}
+                <Text style={styles.textLocation}>{location}</Text>
             </View>
         </View>
     </TouchableOpacity>
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     },
 
     textLocation: {
-        fontSize: 10, color: colors.primary
+        fontSize: 10, color: colors.secondary
     },
 
     viewRestaurantCardText: {
