@@ -6,7 +6,7 @@ import {
     StyleSheet,
     Image,
     Animated,
-    Dimensions, Button
+    Dimensions, Button, SafeAreaView
 } from 'react-native'
 
 import { ipAddress } from "../config";
@@ -18,11 +18,14 @@ import { Auth } from 'aws-amplify'
 import {getAllRestaurants} from "../functions/RestaurantFunctions.";
 import {getAllRestaurantPhotos} from "../functions/PhotoFunctions";
 import { logOut } from '../actions'
+import SearchBar from "../components/common/SearchBar";
+import MiniRestaurantCard from "../components/common/MiniRestaurantCard";
+
 import { colors, fonts } from '../theme'
-const { width, height } = Dimensions.get('window')
+import CategoryCard from "../components/common/CategoryCard";
+const { width, height } = Dimensions.get('window');
 
 let user = Auth.currentAuthenticatedUser();
-// const { attributes } = user;
 let tempArray = [];
 
 class Home extends React.Component {
@@ -32,13 +35,18 @@ class Home extends React.Component {
     }
     state = {
         restaurantArray: [],
-        avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+        avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
+        username: null,
     }
 
     AnimatedScale = new Animated.Value(1);
     componentDidMount() {
 
         this.animate();
+
+        this.setState({
+            username: user._55.username
+        })
 
         getAllRestaurants()
             .then(restaurants => {
@@ -60,15 +68,7 @@ class Home extends React.Component {
                 console.log(error);
             })
     }
-    logout() {
-        Auth.signOut()
-            .then(() => {
-                this.props.dispatchLogout()
-            })
-            .catch(err => {
-                console.log('err: ', err)
-            })
-    }
+
     animate() {
         Animated.timing(
             this.AnimatedScale,
@@ -91,58 +91,163 @@ class Home extends React.Component {
     render() {
         let array = this.state.restaurantArray;
         let elements = [];
-        for(let i = array.length - 1; i >= 0; i--) {
+        let cardElements = [];
+        array.map(restaurant => {
             elements.push(
-                <RestaurantCard
-                    uri={array[i][0] === undefined ? ipAddress + `photos/placeholder.png`
-                        : ipAddress + array[i][0].photoLocation}
-                    title={array[i].name}
-                    paragraph={array[i].description.substring(0, 80) + ",,,"}
-                    location={array[i].address}
+                <MiniRestaurantCard
+                    uri={restaurant[0] === undefined ? ipAddress + `photos/placeholder.png`
+                        : ipAddress + restaurant[0].photoLocation}
+                    name={restaurant.name}
+                    description={restaurant.description.substring(0, 50) + ",,,"}
+                    location={restaurant.address}
+                    category={"Italian"}
                     onPress={() => {
                         this.props.navigation.navigate("RestaurantPage", {
-                            itemId: array[i].id
+                            itemId: restaurant.id
                         })
                     }}
                 />
             )
-        }
+        })
+
+
 
         return(
-            <ScrollView>
-                {elements}
-                <Text onPress={this.logout.bind(this)} style={styles.welcome}>Logout</Text>
-            </ScrollView>
+            <SafeAreaView style={styles.safeAreaView}>
+                <View style={styles.viewContainer}>
+                <SearchBar/>
+                <ScrollView>
+                    <View style={styles.viewTextContainer}>
+                        <Text style={styles.textHelp}>
+                            What can we help you find, {this.state.username} ?
+                        </Text>
+                    </View>
+                    <View style={styles.viewContainerHelp}>
+                        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+
+                            <CategoryCard
+                                uri={ipAddress + "photos/valorant-ranks.jpg"}
+                                name={"Italian"}
+                            />
+                            <CategoryCard
+                                uri={ipAddress + "photos/valorant-ranks.jpg"}
+                                name={"Lebanese"}
+                            />
+                            <CategoryCard
+                                uri={ipAddress + "photos/valorant-ranks.jpg"}
+                                name={"Japanese"}
+                            />
+                            <CategoryCard
+                                uri={ipAddress + "photos/valorant-ranks.jpg"}
+                                name={"Burgers"}
+                            />
+                        </ScrollView>
+                    </View>
+                    <View style={styles.viewContainerOtherRestaurants}>
+                        <Text style={styles.textOtherRestaurants}>
+                            Top Picks
+                        </Text>
+
+                        <Text style={styles.textOtherRestaurantsBelow}>
+                            Top picks chosen by Users
+                        </Text>
+
+                        <View style={styles.viewOtherCard}>
+                            <Image
+                                source={{uri: ipAddress + 'photos/valorant-ranks.jpg'}}
+                                style={styles.imageOtherCard}
+                            />
+                        </View>
+                    </View>
+                    <View style={{marginTop: 40}}>
+                        <Text style={styles.textAllRestaurants}>
+                            Restaurants around your area
+                        </Text>
+                        <View style={styles.viewMultipleCards}>
+                            {elements}
+                            {elements}
+                        </View>
+                    </View>
+                </ScrollView>
+            </View>
+            </SafeAreaView>
             )
 
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center',
+    textHelp: {
+        marginTop: 10,
+        fontSize: 26,
+        fontWeight: '700',
+        paddingHorizontal: 20,
+    },
+    safeAreaView: {
+        flex: 1,
+        backgroundColor: colors.white
+    },
+
+    viewContainer: {
         flex: 1
     },
-    homeContainer: {
-        alignItems: 'center'
+
+    viewTextContainer: {
+        flex: 1,
+        backgroundColor: colors.white,
+        paddingTop: 10,
     },
-    welcome: {
-        fontFamily: fonts.light,
-        color: 'rgba(0, 0, 0, .85)',
-        marginBottom: 26,
-        fontSize: 22,
-        textAlign: 'center'
+
+    viewContainerHelp: {
+        height: 130,
+        marginTop: 20
     },
-    registration: {
-        fontFamily: fonts.base,
-        color: 'rgba(0, 0, 0, .5)',
-        marginTop: 20,
-        fontSize: 16,
+
+    viewContainerOtherRestaurants: {
+        marginTop: 30,
+        paddingHorizontal: 20
+    },
+
+    textOtherRestaurants: {
+        fontSize: 26,
+        fontWeight: "700"
+    },
+
+    textOtherRestaurantsBelow: {
+        fontWeight:"100",
+        marginTop: 10,
+    },
+
+    viewOtherCard: {
+        width: width - 40,
+        height: 200,
+        marginTop: 20
+    },
+
+    imageOtherCard: {
+        flex:1,
+        height: null,
+        width: null,
+        resizeMode: 'cover',
+        borderRadius: 6,
+        borderWidth: 1,
+        borderColor: "#dddd",
+    },
+
+    textAllRestaurants: {
+        fontSize: 26,
+        fontWeight: "700",
+        paddingHorizontal: 20
+    },
+    viewMultipleCards: {
         paddingHorizontal: 20,
-        textAlign: 'center'
-    }
+        marginTop: 20,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between'
+    },
+
+
 })
 
 const mapStateToProps = state => ({

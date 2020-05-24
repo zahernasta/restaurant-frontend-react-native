@@ -1,6 +1,16 @@
 import  React, { Component, Fragment }  from 'react';
 
-import {Text, View, Animated, FlatList, ScrollView, Button, Dimensions, ToastAndroid} from 'react-native';
+import {
+    Text,
+    View,
+    Animated,
+    FlatList,
+    ScrollView,
+    Button,
+    Dimensions,
+    ToastAndroid,
+    TouchableWithoutFeedback, TouchableOpacity
+} from 'react-native';
 import { getOneRestaurant } from "../functions/RestaurantFunctions.";
 import AboutRestaurant  from "../components/restuarant-detail/AboutRestaurant";
 import Header from "../components/common/Header";
@@ -12,15 +22,16 @@ import Gallery from "../components/common/Gallery";
 import Menu from "../components/common/Menu";
 
 import MenuItem from "../components/common/MenuItems";
+import ImageCarousel from "../components/common/ImageCarousel";
+
 import { Auth } from 'aws-amplify'
-
-import { NetworkInfo } from "react-native-network-info";
-
 
 import metrics from "../metrics";
 import {colors, fonts} from "../theme";
 import {ipAddress} from "../config";
 import {addFavorites, findUserByUsername} from "../functions/UserFunctions";
+
+import IconBasket from 'react-native-vector-icons/Fontisto';
 
 const DishTitle = styled(Text).attrs({
     ellipsizeMode: 'tail',
@@ -58,6 +69,7 @@ let user = Auth.currentAuthenticatedUser();
 
 class RestaurantPage extends Component<Props, {}> {
 
+
     state = {
         id: null,
         address: "",
@@ -86,10 +98,8 @@ class RestaurantPage extends Component<Props, {}> {
         })
     }
 
-
     async componentDidMount(): void {
 
-        console.log("User : " + user._55.username);
         const {params} = this.props.navigation.state;
         const itemId = params ? params.itemId : null;
         this.setState({
@@ -97,12 +107,10 @@ class RestaurantPage extends Component<Props, {}> {
             username: user._55.username
         });
 
-        let foodArray = [];
         let categoryArray = [];
         let uniqueArray = [];
         getMenu(itemId)
             .then((menu) => {
-                // console.log(menu);
                 this.setState({
                     menu: menu
                 })
@@ -121,8 +129,6 @@ class RestaurantPage extends Component<Props, {}> {
                 console.log(error);
             });
 
-
-        console.log(uniqueArray);
         getAllRestaurantPhotos(itemId)
             .then(photos => {
                 if(photos.length !== 0) {
@@ -141,8 +147,12 @@ class RestaurantPage extends Component<Props, {}> {
             .catch(error => {
                 console.log(error);
             })
+
         getOneRestaurant(itemId)
             .then(restaurant => {
+                this.props.navigation.setParams({
+                    handleBasket: restaurant.id
+                });
                 this.setState({
                     address: restaurant.address,
                     deliveryStartTime: restaurant.deliveryStartTime,
@@ -158,19 +168,12 @@ class RestaurantPage extends Component<Props, {}> {
             .catch(error => {
                 console.log(error);
             });
-
-
     }
 
-    componentHideAndShow = () => {
-        this.setState(previousState => ({content: !previousState.content}));
-    };
-
     renderHeaderSection = (
-        imageUrl: string,
-        thumbnailImageUrl: string
+        images: Array
     ) => (
-        <Header thumbnailImageUrl={thumbnailImageUrl} imageUrl={imageUrl}/>
+        <ImageCarousel images={images}/>
     );
 
     renderAboutRestaurant = (
@@ -186,19 +189,6 @@ class RestaurantPage extends Component<Props, {}> {
             description={description}
         />
     );
-
-    renderGallery = (
-        images: Array
-    ) => (
-        <Gallery images={images}/>
-    );
-
-    renderMenu = (
-        menu: Array,
-        photo: string,
-    ) => (
-        <Menu menu={menu} photo={photo}/>
-    )
 
     addFavorite = () => {
         findUserByUsername(user._55.username)
@@ -216,6 +206,22 @@ class RestaurantPage extends Component<Props, {}> {
             })
     };
 
+    static navigationOptions = ({navigation}) => {
+        const {params = {}} = navigation.state;
+        return {
+            headerRight: (
+                <TouchableOpacity onPress={() => navigation.navigate("Basket", {
+                    restaurantId: params.handleBasket
+                })}
+                  style={{marginRight: 10}}>
+                    <IconBasket
+                        name={"shopping-basket"}
+                        size={26}
+                    />
+                </TouchableOpacity>
+            )
+        }
+    }
 
     render() {
         const scrollEnabled = this.state.screenHeight > height;
@@ -228,18 +234,7 @@ class RestaurantPage extends Component<Props, {}> {
             >
                 <Fragment >
                     {
-                        this.renderHeaderSection(
-                        ipAddress + `${this.state.photoLocation}`,
-                            ipAddress + `${this.state.photoLocation}`)
-                    }
-                    {
-                        this.state.content ? this.renderGallery(this.state.photos) : null
-                    }
-                    {
-                        this.state.isEmpty ? null
-                            : <Button color={colors.primary}
-                                      title={!this.state.content ? "Click to show more images" : "Click to hide images" }
-                                      onPress={this.componentHideAndShow} />
+                        this.renderHeaderSection(this.state.photos)
                     }
 
                     {
@@ -252,18 +247,6 @@ class RestaurantPage extends Component<Props, {}> {
                             this.state.description
                         )
                     }
-
-
-                        <Button color={colors.primary}
-                                title={"Go To Basket"}
-                                onPress={() => {
-                                    this.props.navigation.navigate("Basket", {
-                                            restaurantId: this.state.id,
-                                        }
-                                    )
-                                }
-                            }
-                        />
 
                     <View style={{marginBottom: 10, marginTop: 10, flex: 1,
                         justifyContent: "center", alignItems: "center"}}>
@@ -279,7 +262,6 @@ class RestaurantPage extends Component<Props, {}> {
                     </View>
 
                     {
-                        // this.renderMenu(this.state.menu, this.state.photoLocation)
                         <View>
                             {
                                 this.state.foodCategories.map(category => {
@@ -292,6 +274,7 @@ class RestaurantPage extends Component<Props, {}> {
                                             <ScrollView
                                                 horizontal={true}
                                                 style={{marginBottom: 10}}
+                                                showsHorizontalScrollIndicator={false}
                                             >
                                             {this.state.menu.map(food => {
                                                 console.log(food.foodCategory.name);

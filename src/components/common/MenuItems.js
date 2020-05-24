@@ -11,7 +11,7 @@ import { colors, fonts } from "../../theme";
 import {ipAddress} from "../../config";
 
 const Container = styled(View) `
-    width: ${() => metrics.getWidthFromDP('45%')}px;
+    width: ${() => metrics.getWidthFromDP('50%')}px;
     height: 100%;
     margin-horizontal: ${() => metrics.smallSize}px;
 `;

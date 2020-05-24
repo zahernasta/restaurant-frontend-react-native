@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 
 import {
+    ScrollView,
     Text,
     View,
 } from 'react-native';
@@ -45,7 +46,6 @@ class OrderPage extends Component {
         let array = this.state.orderArray;
         let elements = [];
         array.map(element => {
-            console.log(element.orderItemSet);
             elements.push(
                 <OrderCard
                     number = {element.id}
@@ -62,9 +62,9 @@ class OrderPage extends Component {
             )
         })
         return(
-            <View style={{flex: 1}}>
+            <ScrollView style={{flex: 1}}>
                 {elements}
-            </View>
+            </ScrollView>
         )
     }
 };

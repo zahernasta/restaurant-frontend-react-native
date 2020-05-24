@@ -11,6 +11,12 @@ import Basket from "../pages/Basket";
 import OrderPage from "../pages/OrderPage";
 import FavoritePage from "../pages/FavoritePage";
 
+import Icon from "react-native-vector-icons/Ionicons";
+import IconEntypo from "react-native-vector-icons/Entypo";
+import IconMaterial from "react-native-vector-icons/MaterialCommunityIcons";
+import {color} from "react-native-reanimated";
+
+
 
 const styles = StyleSheet.create({
     icon: {
@@ -26,9 +32,10 @@ const TabNavigatorAfterLogin = createBottomTabNavigator({
         navigationOptions: {
             title: 'Restaurants',
             tabBarIcon: ({ tintColor }) => (
-                <Image
-                    source={require('../assets/signInButton.png')}
-                    style={[styles.icon, { tintColor }]}
+                <Icon
+                    name={"ios-restaurant"}
+                    color={tintColor}
+                    size={26}
                 />
             )
         }
@@ -38,9 +45,10 @@ const TabNavigatorAfterLogin = createBottomTabNavigator({
         navigationOptions: {
             title: "Orders",
             tabBarIcon: ({ tintColor }) => (
-                <Image
-                    source={require('../assets/boomboxcropped.png')}
-                    style={[styles.icon, { tintColor }]}
+                <IconEntypo
+                    name={"shopping-bag"}
+                    color={tintColor}
+                    size={26}
                 />
             )
         }
@@ -50,9 +58,10 @@ const TabNavigatorAfterLogin = createBottomTabNavigator({
         navigationOptions : {
             title: "Favorites",
             tabBarIcon: ({ tintColor }) => (
-                <Image
-                    source={require('../assets/shape.png')}
-                    style={[styles.icon, { tintColor }]}
+                <Icon
+                    name={"ios-heart-empty"}
+                    color={tintColor}
+                    size={26}
                 />
             )
         }
@@ -62,14 +71,26 @@ const TabNavigatorAfterLogin = createBottomTabNavigator({
         navigationOptions: {
             title: 'Settings',
             tabBarIcon: ({ tintColor }) => (
-                <Image
-                    source={require('../assets/signUpButton.png')}
-                    style={[styles.icon, { tintColor }]}
+                <IconMaterial
+                    name={"account"}
+                    color={tintColor}
+                    size={26}
                 />
             )
         }
     },
 
+}, {
+    tabBarOptions: {
+        activeTintColor: colors.primary,
+        inactiveTintColor: 'grey',
+        style: {
+            backgroundColor: colors.white,
+            borderTopWidth: 0.5,
+            borderTopColor: 'grey',
+            elevation: 1,
+        }
+    }
 });
 
 export default TabNavigatorAfterLogin;

@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {
     ScrollView,
     Text,
-    StyleSheet, Button, View
+    StyleSheet, Button, View, ToastAndroid
 } from 'react-native';
 
 import {getItemsFromBasket} from "../functions/BasketFunctions";
@@ -62,7 +62,7 @@ class Basket extends Component {
 
     createOrder(sum: Float) {
         const order = {
-            orderDate: new Date().getFullYear() + "-" + new Date().getMonth() + 1 + "-" +
+            orderDate: new Date().getFullYear() + "-" + (new Date().getMonth() + 1) + "-" +
                 new Date().getDate(),
             orderTime: new Date().getHours() + ":" + new Date().getMinutes() + ":" +
                 new Date().getSeconds(),
@@ -73,11 +73,16 @@ class Basket extends Component {
 
         createOneOrder(this.state.userId, this.state.restaurantId, order)
             .then(response => {
-
+                ToastAndroid.show(response, ToastAndroid.SHORT);
             })
             .catch(error => {
-
+                console.log(error)
             });
+
+        this.setState({
+            basketItems: [],
+            grandTotal: null
+        })
     }
 
     render() {

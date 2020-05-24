@@ -24,10 +24,20 @@ class UserSettings extends Component {
     componentDidMount(): void {
         this.setState();
     }
+    logout() {
+        Auth.signOut()
+            .then(() => {
+                this.props.dispatchLogout()
+            })
+            .catch(err => {
+                console.log('err: ', err)
+            })
+    }
 
     render() {
         return(
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                <Text onPress={this.logout.bind(this)} >Logout</Text>
                 <Text>UserSettings Page, WELKOMEN BITCH</Text>
             </View>
         )

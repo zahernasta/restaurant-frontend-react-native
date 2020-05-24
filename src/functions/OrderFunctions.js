@@ -10,10 +10,10 @@ export const createOneOrder = (userId, restaurantId, order) => {
         amount: order.amount
     })
         .then(data => {
-            console.log(data)
+            return data;
         })
         .catch(error => {
-            console.log(error);
+            return error;
         })
 }
 
