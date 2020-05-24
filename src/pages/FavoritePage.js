@@ -13,6 +13,7 @@ import RestaurantCard from "../components/restuarant-detail/RestaurantCard";
 import {ipAddress} from "../config";
 
 import NewRestaurantCard from "../components/common/NewRestaurantCard";
+import {colors} from "../theme";
 
 const user = Auth.currentAuthenticatedUser();
 
@@ -67,7 +68,7 @@ class FavoritePage extends Component {
         })
 
         return(
-            <View style={{flex: 1}}>
+            <View style={{flex: 1, backgroundColor: colors.white}}>
                 <Text style={styles.viewName}>Your Favorites</Text>
                 <ScrollView>
                     {elements}

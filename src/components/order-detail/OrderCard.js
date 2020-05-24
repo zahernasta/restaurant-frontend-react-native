@@ -46,18 +46,18 @@ export default ({number, orderDate, orderTime, orderStatus = false, deliveryDate
                         </Text>
                     </View>
                 }
-                <View
-                    style={{
-                        marginTop: 15,
-                        borderBottomColor: 'black',
-                        borderBottomWidth: StyleSheet.hairlineWidth,
-                    }}
-                />
-            </View>
             <Text style={styles.totalPrice}>Total Price: </Text>
             <View style={styles.finalOrder}>
                 <PriceFlag
                     price={price}
+                />
+            </View>
+                <View
+                    style={{
+                        marginTop: 30,
+                        borderBottomColor: 'black',
+                        borderBottomWidth: StyleSheet.hairlineWidth,
+                    }}
                 />
             </View>
         </View>

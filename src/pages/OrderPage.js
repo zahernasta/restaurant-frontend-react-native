@@ -11,6 +11,7 @@ import { Auth } from 'aws-amplify'
 import OrderCard from "../components/order-detail/OrderCard";
 import {findUserByUsername} from "../functions/UserFunctions";
 import {getOrdersByUserId} from "../functions/OrderFunctions";
+import {colors} from "../theme";
 
 let user = Auth.currentAuthenticatedUser();
 
@@ -63,7 +64,7 @@ class OrderPage extends Component {
             )
         })
         return(
-            <ScrollView style={{flex: 1}}>
+            <ScrollView style={{flex: 1, backgroundColor: colors.white}}>
                 {elements}
             </ScrollView>
         )

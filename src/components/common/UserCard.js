@@ -21,12 +21,10 @@ export default ({uri, name, email}) => (
 const styles = StyleSheet.create({
     viewCard: {
         flexDirection: "row",
-        borderRadius: 6,
         justifyContent: "flex-start",
         backgroundColor: "#fff",
         height: 120,
-        borderWidth: 3,
-        borderColor: "#dddd",
+        elevation: 10
     },
     image: {
         marginLeft: "5%",
