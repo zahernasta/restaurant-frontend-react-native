@@ -8,7 +8,7 @@ import {
 
 import {getItemsFromBasket} from "../functions/BasketFunctions";
 import {findUserByUsername} from "../functions/UserFunctions";
-import {getOneRestaurant} from "../functions/RestaurantFunctions.";
+import {getOneRestaurant} from "../functions/RestaurantFunctions";
 import {createOneOrder} from "../functions/OrderFunctions";
 
 import BasketCard from '../components/basket-detail/BasketCard'

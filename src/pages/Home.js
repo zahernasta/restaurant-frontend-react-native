@@ -6,7 +6,7 @@ import {
     StyleSheet,
     Image,
     Animated,
-    Dimensions, Button, SafeAreaView
+    Dimensions, Button, SafeAreaView, ToastAndroid
 } from 'react-native'
 
 import { ipAddress } from "../config";
@@ -15,14 +15,16 @@ import RestaurantCard from "../components/restuarant-detail/RestaurantCard";
 import { connect } from 'react-redux'
 import { Auth } from 'aws-amplify'
 
-import {getAllRestaurants} from "../functions/RestaurantFunctions.";
+import {getAllRestaurants} from "../functions/RestaurantFunctions";
 import {getAllRestaurantPhotos} from "../functions/PhotoFunctions";
 import { logOut } from '../actions'
 import SearchBar from "../components/common/SearchBar";
 import MiniRestaurantCard from "../components/common/MiniRestaurantCard";
+import {getCuisineCategories} from "../functions/CuisineCategoryFunctions";
 
 import { colors, fonts } from '../theme'
 import CategoryCard from "../components/common/CategoryCard";
+import NewRestaurantCard from "../components/common/NewRestaurantCard";
 const { width, height } = Dimensions.get('window');
 
 let user = Auth.currentAuthenticatedUser();
@@ -37,6 +39,7 @@ class Home extends React.Component {
         restaurantArray: [],
         avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
         username: null,
+        cuisineCategories: []
     }
 
     constructor() {
@@ -53,6 +56,17 @@ class Home extends React.Component {
         this.setState({
             username: user._55.username
         })
+
+        getCuisineCategories()
+            .then(categories => {
+                this.setState({
+                    cuisineCategories: categories
+                });
+            })
+            .catch(error => {
+                console.log(error);
+            })
+
         getAllRestaurants()
             .then(restaurants => {
                 restaurants.map(restaurant => {
@@ -96,7 +110,8 @@ class Home extends React.Component {
     render() {
         let array = this.state.restaurantArray;
         let elements = [];
-        let cardElements = [];
+        let arrayCategories = this.state.cuisineCategories;
+        let categoryElements = [];
         array.map(restaurant => {
             elements.push(
                 <MiniRestaurantCard
@@ -105,7 +120,7 @@ class Home extends React.Component {
                     name={restaurant.name}
                     description={restaurant.description.substring(0, 50) + ",,,"}
                     location={restaurant.address}
-                    category={"Italian"}
+                    category={restaurant.cuisineCategory.name}
                     onPress={() => {
                         this.props.navigation.navigate("RestaurantPage", {
                             itemId: restaurant.id
@@ -115,6 +130,17 @@ class Home extends React.Component {
             )
         })
 
+        arrayCategories.map(category => {
+            categoryElements.push(
+                <CategoryCard
+                    uri={ipAddress + "photos/valorant-ranks.jpg"}
+                    name={category.name}
+                    onPress={() => this.props.navigation.navigate("FoodCategory" , {
+                        categoryName: category.name
+                    })}
+                />
+            )
+        })
 
 
         return(
@@ -129,23 +155,7 @@ class Home extends React.Component {
                     </View>
                     <View style={styles.viewContainerHelp}>
                         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-
-                            <CategoryCard
-                                uri={ipAddress + "photos/valorant-ranks.jpg"}
-                                name={"Italian"}
-                            />
-                            <CategoryCard
-                                uri={ipAddress + "photos/valorant-ranks.jpg"}
-                                name={"Lebanese"}
-                            />
-                            <CategoryCard
-                                uri={ipAddress + "photos/valorant-ranks.jpg"}
-                                name={"Japanese"}
-                            />
-                            <CategoryCard
-                                uri={ipAddress + "photos/valorant-ranks.jpg"}
-                                name={"Burgers"}
-                            />
+                            {categoryElements}
                         </ScrollView>
                     </View>
                     <View style={styles.viewContainerOtherRestaurants}>
@@ -157,14 +167,29 @@ class Home extends React.Component {
                             Top picks chosen by Users
                         </Text>
 
-                        <View style={styles.viewOtherCard}>
-                            <Image
-                                source={{uri: ipAddress + 'photos/valorant-ranks.jpg'}}
-                                style={styles.imageOtherCard}
+                        <ScrollView showsHorizontalScrollIndicator={false}
+                                    horizontal={true}
+                                    style={styles.viewOtherCard}
+                                    pagingEnabled={true}>
+                            <RestaurantCard
+                                uri={ipAddress + 'photos/valorant-ranks.jpg'}
+                                title={"RestaurantDummy"}
+                                category={"DummyCategory"}
+                                location={"dummy boulevard dummy number "}
+                                onPress={() => ToastAndroid.show("I AM A DUMMY", ToastAndroid.SHORT)}
                             />
-                        </View>
+                            <RestaurantCard
+                                uri={ipAddress + 'photos/valorant-ranks.jpg'}
+                                title={"RestaurantDummy"}
+                                category={"DummyCategory"}
+                                location={"dummy boulevard dummy number "}
+                                onPress={() => ToastAndroid.show("I AM A DUMMY", ToastAndroid.SHORT)}
+                            />
+
+                        </ScrollView>
+
                     </View>
-                    <View style={{marginTop: 40}}>
+                    <View style={{marginTop: 20}}>
                         <Text style={styles.textAllRestaurants}>
                             Restaurants around your area
                         </Text>
@@ -225,8 +250,8 @@ const styles = StyleSheet.create({
 
     viewOtherCard: {
         width: width - 40,
-        height: 200,
-        marginTop: 20
+        height: 250,
+        marginTop: 20,
     },
 
     imageOtherCard: {

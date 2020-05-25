@@ -4,8 +4,8 @@ import {ipAddress} from "../../config";
 import {colors} from "../../theme";
 
 
-export default ({uri, name}) => (
-    <TouchableWithoutFeedback >
+export default ({uri, name, onPress}) => (
+    <TouchableWithoutFeedback onPress={onPress}>
         <View style={styles.cardContainer}>
             <View style={{flex: 2}}>
                 <Image

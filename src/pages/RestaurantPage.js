@@ -11,11 +11,11 @@ import {
     ToastAndroid,
     TouchableWithoutFeedback, TouchableOpacity
 } from 'react-native';
-import { getOneRestaurant } from "../functions/RestaurantFunctions.";
+import { getOneRestaurant } from "../functions/RestaurantFunctions";
 import AboutRestaurant  from "../components/restuarant-detail/AboutRestaurant";
 import Header from "../components/common/Header";
 import {getAllRestaurantPhotos} from "../functions/PhotoFunctions";
-import { getMenu } from "../functions/RestaurantFunctions.";
+import { getMenu } from "../functions/RestaurantFunctions";
 
 import styled from "styled-components";
 import Gallery from "../components/common/Gallery";

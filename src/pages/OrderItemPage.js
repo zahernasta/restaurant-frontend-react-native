@@ -3,6 +3,7 @@ import React, {Component} from "react";
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import BasketCard from "../components/basket-detail/BasketCard";
 import {ipAddress} from "../config";
+import {colors} from "../theme";
 
 class OrderItemPage extends Component<Props, {}> {
 
@@ -37,7 +38,7 @@ class OrderItemPage extends Component<Props, {}> {
         })
 
         return(
-            <View style={{flex:1, marginTop: 5}}>
+            <View style={{flex:1, marginTop: 5, backgroundColor: colors.white}}>
                 <Text style={styles.viewName}>Ordered Items</Text>
                 <ScrollView>
                     {elements}

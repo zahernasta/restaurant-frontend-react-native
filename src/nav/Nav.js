@@ -11,6 +11,7 @@ import FoodDetail from "../pages/FoodDetail";
 import Basket from "../pages/Basket";
 import {Image} from "react-native";
 import OrderItemPage from "../pages/OrderItemPage";
+import FoodCategoryPage from "../pages/FoodCategoryPage";
 
 const switchNavigation = createStackNavigator(
     {
@@ -54,6 +55,16 @@ const switchNavigation = createStackNavigator(
 
         FoodDetail : {
             screen: FoodDetail,
+            navigationOptions: {
+                headerShown: true,
+                headerTransparent: true,
+                title: "",
+                style: {backgroundColor: "white"}
+            }
+        },
+
+        FoodCategory: {
+            screen: FoodCategoryPage,
             navigationOptions: {
                 headerShown: true,
                 headerTransparent: true,

@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start",
         backgroundColor: "#fff",
         height: 120,
-        elevation: 10
+        elevation: 5
     },
     image: {
         marginLeft: "5%",

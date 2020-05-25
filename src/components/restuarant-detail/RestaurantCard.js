@@ -6,10 +6,15 @@ import {
     FlatList,
     Image,
     Button,
-    TouchableOpacity
+    TouchableOpacity,
+    Dimensions
 } from "react-native";
+import {colors} from "../../theme";
+import IconMaterial from "react-native-vector-icons/MaterialIcons";
 
-export default ({uri, title, paragraph, location, onPress}) => (
+const {width, height} = Dimensions.get("window");
+
+export default ({uri, title, category, location, onPress}) => (
     <TouchableOpacity onPress={onPress}>
         <View style={styles.viewCard} >
             <Image style={styles.image} source={{ uri: uri }} />
@@ -17,12 +22,18 @@ export default ({uri, title, paragraph, location, onPress}) => (
                 <Text style={styles.textName}>
                     {title}
                 </Text>
-                <Text style={styles.textDescription}>
-                    {paragraph}
-                </Text>
-                <Text style={styles.textLocation}>
-                    {location}
-                </Text>
+                <View style={{flexDirection: "row"}}>
+                    <IconMaterial name={"restaurant"} size={16} style={{color: colors.primary, marginRight: 4}}/>
+                    <Text style={styles.textDescription}>
+                        {category}
+                    </Text>
+                </View>
+                <View style={{flexDirection:"row"}}>
+                    <IconMaterial name={"room"} size={16} style={{color: colors.primary, marginRight: 4}}/>
+                    <Text style={styles.textLocation}>
+                        {location}
+                    </Text>
+                </View>
             </View>
         </View>
     </TouchableOpacity>
@@ -30,10 +41,11 @@ export default ({uri, title, paragraph, location, onPress}) => (
 
 const styles = StyleSheet.create({
     viewCard: {
-        marginHorizontal: 16,
-        marginVertical: 8,
+        marginVertical: 0,
         borderRadius: 6,
-        height: 160
+        marginHorizontal: 8,
+        height: 220,
+        width: width - 60,
     },
     image: {
         backgroundColor: "#ccc",
@@ -51,7 +63,8 @@ const styles = StyleSheet.create({
         height: "100%",
         bottom: 0,
         backgroundColor: "rgba(0, 0, 0, 0.55)",
-        borderRadius: 6
+        borderRadius: 6,
+        justifyContent: "space-evenly"
     },
     textName: {
         fontSize: 32,
@@ -63,7 +76,7 @@ const styles = StyleSheet.create({
         color: "#ffffff"
     },
     textLocation: {
-        fontSize: 14,
+        fontSize: 12,
         color: "#ffffff"
     }
 });

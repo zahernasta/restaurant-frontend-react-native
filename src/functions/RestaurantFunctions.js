@@ -32,3 +32,13 @@ export const getMenu = (id) => {
         })
 }
 
+export const getRestaurantsByCategory = (categoryName) =>{
+    return axios.get(ipAddress + `api/restaurants/categories?category=${categoryName}`)
+        .then(restaurants =>{
+            return restaurants.data;
+        })
+        .catch(error => {
+            return error;
+        })
+}
+

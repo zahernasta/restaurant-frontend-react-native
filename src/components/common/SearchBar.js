@@ -24,10 +24,11 @@ export default () => (
 
 const style = StyleSheet.create({
     viewSearch: {
-        height: Platform.OS === 'android' ? 100 : 80,
+        height: Platform.OS === 'android' ? 120 : 80,
         backgroundColor: colors.white,
         borderBottomWidth: 1,
         borderBottomColor: "#dddd",
+        elevation: 5
     },
 
     viewSearchChild: {
@@ -38,7 +39,7 @@ const style = StyleSheet.create({
         shadowColor: colors.black,
         shadowOpacity: 0.4,
         elevation: 2,
-        marginTop: Platform.OS === 'android' ? 20 : null
+        marginTop: Platform.OS === 'android' ? 30 : null
     },
 
     textInputSearch: {

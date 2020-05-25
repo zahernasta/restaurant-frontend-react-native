@@ -8,6 +8,7 @@ import Basket from "../pages/Basket";
 import {createAppContainer} from "react-navigation";
 import UserSettings from "../pages/UserSettings";
 import OrderItemPage from "../pages/OrderItemPage";
+import FoodCategoryPage from "../pages/FoodCategoryPage";
 
 const StackNav = createStackNavigator({
     Home: {screen: Home},
@@ -15,7 +16,8 @@ const StackNav = createStackNavigator({
     FoodDetail: {screen: FoodDetail},
     Basket: {screen: Basket},
     OrderItems: {screen: OrderItemPage},
-    UserSettings: {screen: UserSettings}
+    UserSettings: {screen: UserSettings},
+    FoodCategory: {screen: FoodCategoryPage}
 });
 
 export default StackNav;
